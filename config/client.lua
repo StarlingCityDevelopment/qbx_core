@@ -58,22 +58,22 @@ return {
 
         largeIcon = { -- To set this up, visit https://forum.cfx.re/t/how-to-updated-discord-rich-presence-custom-image/157686
             icon = 'logo', -- Here you will have to put the image name for the 'large' icon.
-            text = 'Initial Roleplay', -- Here you can add hover text for the 'large' icon.
+            text = 'Starling Roleplay', -- Here you can add hover text for the 'large' icon.
         },
 
         smallIcon = {
             icon = 'icon', -- Here you will have to put the image name for the 'small' icon.
-            text = 'discord.gg/initialrp', -- Here you can add hover text for the 'small' icon.
+            text = 'discord.gg/starlingrp', -- Here you can add hover text for the 'small' icon.
         },
 
         firstButton = {
             text = 'Site Web',
-            link = 'https://initialrp.fr/',
+            link = 'https://starlingrp.fr/',
         },
 
         secondButton = {
             text = 'Discord',
-            link = 'https://discord.gg/initialrp',
+            link = 'https://discord.gg/starlingrp',
         }
     },
 

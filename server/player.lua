@@ -38,7 +38,7 @@ function Login(source, citizenid, newData)
     end
 
     local license, license2 = GetPlayerIdentifierByType(source --[[@as string]], 'license'), GetPlayerIdentifierByType(source --[[@as string]], 'license2')
-    local userId = storage.fetchUserByIdentifier(license2) or storage.fetchUserByIdentifier(license)
+    local userId = license2 and storage.fetchUserByIdentifier(license2) or storage.fetchUserByIdentifier(license)
     if not userId then
         lib.print.error('User does not exist. Licenses checked:', license2, license)
         return false
@@ -201,9 +201,11 @@ function SetPlayerPrimaryJob(citizenid, jobName)
     assert(job.grades[grade] ~= nil, ('job %s does not have grade %s'):format(jobName, grade))
 
     player.PlayerData.job = toPlayerJob(jobName, job, grade)
-    Save(player.PlayerData.source)
 
-    if not player.Offline then
+    if player.Offline then
+        SaveOffline(player.PlayerData)
+    else
+        Save(player.PlayerData.source)
         UpdatePlayerData(player.PlayerData.source)
         TriggerEvent('QBCore:Server:OnJobUpdate', player.PlayerData.source, player.PlayerData.job)
         TriggerClientEvent('QBCore:Client:OnJobUpdate', player.PlayerData.source, player.PlayerData.job)
@@ -316,7 +318,11 @@ function RemovePlayerFromJob(citizenid, jobName)
         local job = GetJob('unemployed')
         assert(job ~= nil, 'cannot find unemployed job. Does it exist in shared/jobs.lua?')
         player.PlayerData.job = toPlayerJob('unemployed', job, 0)
-        Save(player.PlayerData.source)
+        if player.Offline then
+            SaveOffline(player.PlayerData)
+        else
+            Save(player.PlayerData.source)
+        end
     end
 
     if not player.Offline then
@@ -413,15 +419,17 @@ function SetPlayerPrimaryGang(citizenid, gangName)
         name = gangName,
         label = gang.label,
         isboss = gang.grades[grade].isboss,
+        bankAuth = gang.grades[grade].bankAuth,
         grade = {
             name = gang.grades[grade].name,
             level = grade
         }
     }
 
-    Save(player.PlayerData.source)
-
-    if not player.Offline then
+    if player.Offline then
+        SaveOffline(player.PlayerData)
+    else
+        Save(player.PlayerData.source)
         UpdatePlayerData(player.PlayerData.source)
         TriggerEvent('QBCore:Server:OnGangUpdate', player.PlayerData.source, player.PlayerData.gang)
         TriggerClientEvent('QBCore:Client:OnGangUpdate', player.PlayerData.source, player.PlayerData.gang)
@@ -536,12 +544,17 @@ function RemovePlayerFromGang(citizenid, gangName)
             name = 'none',
             label = gang.label,
             isboss = false,
+            bankAuth = false,
             grade = {
                 name = gang.grades[0].name,
                 level = 0
             }
         }
-        Save(player.PlayerData.source)
+        if player.Offline then
+            SaveOffline(player.PlayerData)
+        else
+            Save(player.PlayerData.source)
+        end
     end
 
     if not player.Offline then
@@ -657,6 +670,7 @@ function CheckPlayerData(source, playerData)
         type = job.type,
         onduty = playerData.job?.onduty or false,
         isboss = job.grades[jobGrade].isboss or false,
+        bankAuth = job.grades[jobGrade].bankAuth or false,
         grade = {
             name = job.grades[jobGrade].name,
             level = jobGrade,
@@ -674,6 +688,7 @@ function CheckPlayerData(source, playerData)
         name = playerData.gang?.name or 'none',
         label = gang.label,
         isboss = gang.grades[gangGrade].isboss or false,
+        bankAuth = gang.grades[gangGrade].bankAuth or false,
         grade = {
             name = gang.grades[gangGrade].name,
             level = gangGrade
@@ -925,6 +940,7 @@ function CreatePlayer(playerData, Offline)
                 name = 'unemployed',
                 label = 'Civilian',
                 isboss = false,
+                bankAuth = false,
                 onduty = true,
                 payment = 10,
                 grade = {
@@ -942,6 +958,7 @@ function CreatePlayer(playerData, Offline)
                 self.PlayerData.job.grade.name = jobGrade.name
                 self.PlayerData.job.payment = jobGrade.payment or 30
                 self.PlayerData.job.isboss = jobGrade.isboss or false
+                self.PlayerData.job.bankAuth = jobGrade.bankAuth or false
             else
                 self.PlayerData.job.grade = {
                     name = 'No Grades',
@@ -967,6 +984,7 @@ function CreatePlayer(playerData, Offline)
                 name = 'none',
                 label = 'No Gang Affiliation',
                 isboss = false,
+                bankAuth = false,
                 grade = {
                     name = 'none',
                     level = 0
@@ -978,13 +996,16 @@ function CreatePlayer(playerData, Offline)
             local gangGrade = gang.grades[self.PlayerData.gang.grade.level]
 
             if gangGrade then
+                self.PlayerData.gang.grade.name = gangGrade.name
                 self.PlayerData.gang.isboss = gangGrade.isboss or false
+                self.PlayerData.gang.bankAuth = gangGrade.bankAuth or false
             else
                 self.PlayerData.gang.grade = {
                     name = 'No Grades',
                     level = 0,
                 }
                 self.PlayerData.gang.isboss = false
+                self.PlayerData.gang.bankAuth = false
             end
         end
 
@@ -1103,9 +1124,25 @@ function SetMetadata(identifier, metadata, value)
 
     if not player then return end
 
-    local oldValue = player.PlayerData.metadata[metadata]
+    local oldValue
 
-    player.PlayerData.metadata[metadata] = value
+    if metadata:match('%.') then
+        local metaTable, metaKey = metadata:match('([^%.]+)%.(.+)')
+
+        if metaKey:match('%.') then
+            lib.print.error('cannot get nested metadata more than 1 level deep')
+        end
+
+        oldValue = player.PlayerData.metadata[metaTable]
+
+        player.PlayerData.metadata[metaTable][metaKey] = value
+
+        metadata = metaTable
+    else
+        oldValue = player.PlayerData.metadata[metadata]
+
+        player.PlayerData.metadata[metadata] = value
+    end
 
     UpdatePlayerData(identifier)
 
@@ -1149,7 +1186,17 @@ function GetMetadata(identifier, metadata)
 
     if not player then return end
 
-    return player.PlayerData.metadata[metadata]
+    if metadata:match('%.') then
+        local metaTable, metaKey = metadata:match('([^%.]+)%.(.+)')
+
+        if metaKey:match('%.') then
+            lib.print.error('cannot get nested metadata more than 1 level deep')
+        end
+
+        return player.PlayerData.metadata[metaTable][metaKey]
+    else
+        return player.PlayerData.metadata[metadata]
+    end
 end
 
 exports('GetMetadata', GetMetadata)
@@ -1178,14 +1225,17 @@ exports('SetCharInfo', SetCharInfo)
 ---@param moneyType MoneyType
 ---@param amount number
 ---@param actionType 'add' | 'remove' | 'set'
----@param direction boolean
 ---@param reason? string
-local function emitMoneyEvents(source, playerMoney, moneyType, amount, actionType, direction, reason)
-    TriggerClientEvent('hud:client:OnMoneyChange', source, moneyType, amount, direction)
+---@param difference? number
+local function emitMoneyEvents(source, playerMoney, moneyType, amount, actionType, reason, difference)
+    local isSet = actionType == 'set'
+    local isRemove = actionType == 'remove'
+
+    TriggerClientEvent('hud:client:OnMoneyChange', source, moneyType, isSet and math.abs(difference) or amount, isSet and difference < 0 or isRemove, reason)
     TriggerClientEvent('QBCore:Client:OnMoneyChange', source, moneyType, amount, actionType, reason)
     TriggerEvent('QBCore:Server:OnMoneyChange', source, moneyType, amount, actionType, reason)
 
-    if moneyType == 'bank' and actionType == 'remove' then
+    if moneyType == 'bank' and isRemove then
         TriggerClientEvent('qb-phone:client:RemoveBankMoney', source, amount)
     end
 
@@ -1235,7 +1285,7 @@ function AddMoney(identifier, moneyType, amount, reason)
             --oxLibTags = ('script:%s,playerName:%s,citizenId:%s,playerSource:%s,amount:%s,moneyType:%s,newBalance:%s,reason:%s'):format(resource, GetPlayerName(player.PlayerData.source), player.PlayerData.citizenid, player.PlayerData.source, amount, moneyType, player.PlayerData.money[moneyType], reason)
         })
 
-        emitMoneyEvents(player.PlayerData.source, player.PlayerData.money, moneyType, amount, 'add', false, reason)
+        emitMoneyEvents(player.PlayerData.source, player.PlayerData.money, moneyType, amount, 'add', reason)
     end
 
     return true
@@ -1290,7 +1340,7 @@ function RemoveMoney(identifier, moneyType, amount, reason)
             --oxLibTags = ('script:%s,playerName:%s,citizenId:%s,playerSource:%s,amount:%s,moneyType:%s,newBalance:%s,reason:%s'):format(resource, GetPlayerName(player.PlayerData.source), player.PlayerData.citizenid, player.PlayerData.source, amount, moneyType, player.PlayerData.money[moneyType], reason)
         })
 
-        emitMoneyEvents(player.PlayerData.source, player.PlayerData.money, moneyType, amount, 'remove', false, reason)
+        emitMoneyEvents(player.PlayerData.source, player.PlayerData.money, moneyType, amount, 'remove', reason)
     end
 
     return true
@@ -1310,8 +1360,9 @@ function SetMoney(identifier, moneyType, amount, reason)
 
     reason = reason or 'unknown'
     amount = qbx.math.round(tonumber(amount) --[[@as number]])
+    local oldAmount = player.PlayerData.money[moneyType]
 
-    if amount < 0 or not player.PlayerData.money[moneyType] then return false end
+    if amount < 0 or not oldAmount then return false end
 
     if not triggerEventHooks('setMoney', {
         source = player.PlayerData.source,
@@ -1324,7 +1375,7 @@ function SetMoney(identifier, moneyType, amount, reason)
     if not player.Offline then
         UpdatePlayerData(identifier)
 
-        local difference = amount - player.PlayerData.money[moneyType]
+        local difference = amount - oldAmount
         local dirChange = difference < 0 and 'removed' or 'added'
         local absDifference = math.abs(difference)
         local tags = absDifference > 50000 and config.logging.role or {}
@@ -1337,10 +1388,9 @@ function SetMoney(identifier, moneyType, amount, reason)
             color = difference < 0 and 'red' or 'green',
             tags = tags,
             message = ('**%s (citizenid: %s | id: %s)** $%s (%s) %s, new %s balance: $%s reason: %s'):format(GetPlayerName(player.PlayerData.source), player.PlayerData.citizenid, player.PlayerData.source, absDifference, moneyType, dirChange, moneyType, player.PlayerData.money[moneyType], reason),
-            --oxLibTags = ('script:%s,playerName:%s,citizenId:%s,playerSource:%s,amount:%s,moneyType:%s,newBalance:%s,reason:%s,direction:%s'):format(resource, GetPlayerName(player.PlayerData.source), player.PlayerData.citizenid, player.PlayerData.source, absDifference, moneyType, player.PlayerData.money[moneyType], reason, dirChange)
         })
 
-        emitMoneyEvents(player.PlayerData.source, player.PlayerData.money, moneyType, absDifference, 'set', difference < 0, reason)
+        emitMoneyEvents(player.PlayerData.source, player.PlayerData.money, moneyType, amount, 'set', reason, difference)
     end
 
     return true
