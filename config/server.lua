@@ -5,9 +5,9 @@ return {
         ---@alias MoneyType 'cash' | 'bank' | 'crypto'
         ---@alias Money {cash: number, bank: number, crypto: number}
         ---@type Money
-        moneyTypes = { cash = 500, bank = 5000, crypto = 0 }, -- type = startamount - Add or remove money types for your server (for ex. blackmoney = 0), remember once added it will not be removed from the database!
+        moneyTypes = { cash = 500, bank = 750, crypto = 0 }, -- type = startamount - Add or remove money types for your server (for ex. blackmoney = 0), remember once added it will not be removed from the database!
         dontAllowMinus = { 'cash', 'crypto' }, -- Money that is not allowed going in minus
-        paycheckTimeout = 10, -- The time in minutes that it will give the paycheck
+        paycheckTimeout = 20, -- The time in minutes that it will give the paycheck
         paycheckSociety = false -- If true paycheck will come from the society account that the player is employed at
     },
 
@@ -30,7 +30,7 @@ return {
             },
             AccountNumber = {
                 valueFunction = function()
-                    return 'US0' .. math.random(1, 9) .. 'QBX' .. math.random(1111, 9999) .. math.random(1111, 9999) .. math.random(11, 99)
+                    return 'US0' .. math.random(1, 9) .. 'LS' .. math.random(1111, 9999) .. math.random(1111, 9999) .. math.random(11, 99)
                 end,
             },
             PhoneNumber = {
@@ -45,7 +45,7 @@ return {
             },
             WalletId = {
                 valueFunction = function()
-                    return 'QB-' .. math.random(11111111, 99999999)
+                    return 'LS-' .. math.random(11111111, 99999999)
                 end,
             },
             SerialNumber = {
@@ -60,23 +60,15 @@ return {
     ---@alias ColumnName string
     ---@type [TableName, ColumnName][]
     characterDataTables = {
-        {'properties', 'owner'},
-        {'bank_accounts_new', 'id'},
-        {'playerskins', 'citizenid'},
-        {'player_mails', 'citizenid'},
-        {'player_outfits', 'citizenid'},
-        {'player_vehicles', 'citizenid'},
-        {'player_groups', 'citizenid'},
         {'players', 'citizenid'},
-        {'npwd_calls', 'identifier'},
-        {'npwd_darkchat_channel_members', 'user_identifier'},
-        {'npwd_marketplace_listings', 'identifier'},
-        {'npwd_messages_participants', 'participant'},
-        {'npwd_notes', 'identifier'},
-        {'npwd_phone_contacts', 'identifier'},
-        {'npwd_phone_gallery', 'identifier'},
-        {'npwd_twitter_profiles', 'identifier'},
-        {'npwd_match_profiles', 'identifier'},
+        {'player_groups', 'citizenid'},
+        {'player_houses', 'citizenid'},
+        {'player_vehicles', 'citizenid'},
+        {'appearance', 'id'},
+        {'k5_documents', 'ownerId'},
+        {'pefcl_accounts', 'ownerIdentifier'},
+        {'pefcl_cards', 'holderCitizenId'},
+        {'pefcl_cash', 'ownerIdentifier'},
     }, -- Rows to be deleted when the character is deleted
 
     server = {
@@ -95,7 +87,6 @@ return {
         playersNumberOfCharacters = { -- Define maximum amount of player characters by rockstar license (you can find this license in your server's database in the player table)
             ['license2:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'] = 5,
         },
-
         defaultNumberOfCharacters = 3, -- Define maximum amount of default characters (maximum 3 characters defined by default)
     },
 
@@ -111,8 +102,16 @@ return {
         role = {} -- Role to tag for high priority logs. Roles use <@%roleid> and users/channels are <@userid/channelid>
     },
 
+    persistence = {
+        lockState = 'lock', -- 'lock' : vehicle will be locked when spawned, 'unlock' : vehicle will be unlocked when spawned
+    },
+
     giveVehicleKeys = function(src, plate, vehicle)
-        return exports.qbx_vehiclekeys:GiveKeys(src, vehicle)
+        return exports.mm_carkeys:GiveTempKeys(src, plate)
+    end,
+
+    setVehicleLock = function(vehicle, state)
+        --exports.qbx_vehiclekeys:SetLockState(vehicle, state)
     end,
 
     getSocietyAccount = function(accountName)
