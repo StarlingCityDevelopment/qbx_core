@@ -17,37 +17,14 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.repository.default_branch }}
 
-      - uses: pnpm/action-setup@v4.1.0
-        with:
-          version: latest
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: current
-          cache: 'pnpm'
-          cache-dependency-path: 'web/pnpm-lock.yaml'
-
-      - name: Install dependencies
-        run: pnpm install
-        working-directory: web
-
-      - name: Run build
-        run: pnpm build
-        working-directory: web
-        env:
-          CI: false
-
       - name: Bundle files
         run: |
-          mkdir -p ./temp/ox_lib
-          mkdir -p ./temp/ox_lib/web/
-          mkdir -p ./temp/ox_lib/locales/
-          cp ./{fxmanifest.lua,init.lua} ./temp/ox_lib
-          cp ./{locales/en.json,locales/fr.json} ./temp/ox_lib/locales
-          cp -r ./{imports,resource} ./temp/ox_lib
-          cp -r ./web/build ./temp/ox_lib/web/
-          cd ./temp && zip -r ../ox_lib.zip ./ox_lib
+          mkdir -p ./temp/qbx_core
+          mkdir -p ./temp/qbx_core/locales/
+          cp ./{fxmanifest.lua,types.lua} ./temp/qbx_core
+          cp ./{locales/en.json,locales/fr.json} ./temp/qbx_core/locales
+          cp -r ./{bridge,client,config,data,modules,server,shared} ./temp/qbx_core
+          cd ./temp && zip -r ../qbx_core.zip ./qbx_core
 
       - name: Create Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
@@ -56,7 +33,7 @@ jobs:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           title: 'Ready to download'
           prerelease: true
-          files: ox_lib.zip
+          files: qbx_core.zip
 
         env:
           CI: false
