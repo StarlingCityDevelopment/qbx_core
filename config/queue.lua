@@ -1,5 +1,49 @@
 local serverName = require 'config.shared'.serverName
 
+local function checkUser(discord, role)
+    local p = promise:new()
+    local url = ("https://protectbot.starlingrp.fr/api/users/%s/%s/roles"):format(discord, GetConvar("discordGuildId", ""))
+
+    local success, result = pcall(function()
+        PerformHttpRequest(url, function(code, body, head)
+            if code ~= 200 then
+                p:resolve(false)
+                return
+            end
+
+            local data = json.decode(body)
+            if not data or not data.success then
+                p:resolve(false)
+                return
+            end
+
+            if role then
+                for _, v in ipairs(data.roles) do
+                    if v.id == role then
+                        p:resolve(true)
+                        return
+                    end
+                end
+
+                p:resolve(false)
+                return
+            end
+
+            p:resolve(true)
+        end, 'GET', nil, {
+            ['Authorization'] = "Bearer " .. GetConvar("discordBotApiKey", ""),
+        })
+    end)
+
+    if not success then
+        print("^1Error in checkUser function: " .. tostring(result) .. "^7")
+        p:resolve(false)
+        return
+    end
+
+    return Citizen.Await(p)
+end
+
 return {
     ---Amount of seconds to wait before removing a player from the queue after disconnecting while waiting.
     timeoutSeconds = 30,
@@ -26,8 +70,29 @@ return {
     ---If a player doesn't pass any predicate and a sub-queue with no predicate does not exist they will not be let into the server unless a player slot is available.
     ---@type SubQueueConfig[]
     subQueues = {
-        { name = 'Admin Queue', predicate = function(source) return IsPlayerAceAllowed(source --[[@as string]], 'admin') end, cardOptions = { color = 'good' } },
-        { name = 'Regular Queue' },
+        {
+            name = 'Owner Queue',
+            predicate = function(source)
+                local discordId = GetPlayerIdentifierByType(source, 'discord')
+                if not discordId then
+                    return false
+                end
+                discordId = discordId:gsub('discord:', '')
+                return checkUser(discordId, "447685920423149579")
+            end,
+            cardOptions = { color = 'good' }
+        },
+        {
+            name = 'Regular Queue',
+            predicate = function(source)
+                local discordId = GetPlayerIdentifierByType(source, 'discord')
+                if not discordId then
+                    return false
+                end
+                discordId = discordId:gsub('discord:', '')
+                return checkUser(discordId)
+            end,
+        },
     },
 
     ---Cosmetic emojis shown along with the elapsed queue time.
@@ -39,7 +104,7 @@ return {
     },
 
     ---Use the adaptive card generator that is defined below.
-    useAdaptiveCard = true,
+    useAdaptiveCard = false,
 
     ---@class GenerateCardParams
     ---@field subQueue SubQueue
