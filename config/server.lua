@@ -1,5 +1,5 @@
 return {
-    updateInterval = 5, -- how often to update player data in minutes
+    updateInterval = 2.5, -- how often to update player data in minutes
 
     money = {
         ---@alias MoneyType 'cash' | 'bank' | 'crypto'
@@ -12,8 +12,8 @@ return {
     },
 
     player = {
-        hungerRate = 4.2, -- Rate at which hunger goes down.
-        thirstRate = 3.8, -- Rate at which thirst goes down.
+        hungerRate = 12.5, -- Rate at which hunger goes down.
+        thirstRate = 12.5, -- Rate at which thirst goes down.
 
         ---@enum BloodType
         bloodTypes = {
