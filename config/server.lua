@@ -93,11 +93,11 @@ return {
     -- this configuration is for core events only. putting other webhooks here will have no effect
     logging = {
         webhook = {
-            ['default'] = nil, -- default
-            ['joinleave'] = nil, -- default
-            ['ooc'] = nil, -- default
-            ['anticheat'] = nil, -- default
-            ['playermoney'] = nil, -- default
+            ['default'] = "https://discord.com/api/webhooks/1365726904728027176/l0QmVqRvJJXPC2FfNM9_wP4HdwheTqwCzxDbWxy80sVc_Hy0DmLYzT9rkWP1y7ASuXuc", -- default
+            ['joinleave'] = "https://discord.com/api/webhooks/1365726904728027176/l0QmVqRvJJXPC2FfNM9_wP4HdwheTqwCzxDbWxy80sVc_Hy0DmLYzT9rkWP1y7ASuXuc", -- default
+            ['ooc'] = "https://discord.com/api/webhooks/1365726904728027176/l0QmVqRvJJXPC2FfNM9_wP4HdwheTqwCzxDbWxy80sVc_Hy0DmLYzT9rkWP1y7ASuXuc", -- default
+            ['anticheat'] = "https://discord.com/api/webhooks/1365726904728027176/l0QmVqRvJJXPC2FfNM9_wP4HdwheTqwCzxDbWxy80sVc_Hy0DmLYzT9rkWP1y7ASuXuc", -- default
+            ['playermoney'] = "https://discord.com/api/webhooks/1365726904728027176/l0QmVqRvJJXPC2FfNM9_wP4HdwheTqwCzxDbWxy80sVc_Hy0DmLYzT9rkWP1y7ASuXuc", -- default
         },
         role = {} -- Role to tag for high priority logs. Roles use <@%roleid> and users/channels are <@userid/channelid>
     },
