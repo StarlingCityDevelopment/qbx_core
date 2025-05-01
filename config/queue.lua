@@ -90,7 +90,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId)
+                return checkUser(discordId, "1294230550491562015")
             end,
         },
     },
