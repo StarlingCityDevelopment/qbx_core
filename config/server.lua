@@ -107,11 +107,12 @@ return {
     },
 
     giveVehicleKeys = function(src, plate, vehicle)
-        return exports.mm_carkeys:GiveTempKeys(src, plate)
+        local model = QBX.Shared.VehicleHashes[GetEntityModel(vehicle)].model
+        return exports['qs-vehiclekeys']:GiveServerKeys(src, plate, model)
     end,
 
     setVehicleLock = function(vehicle, state)
-        --exports.qbx_vehiclekeys:SetLockState(vehicle, state)
+        SetVehicleDoorsLocked(vehicle, state == 'lock' and 2 or 1)
     end,
 
     getSocietyAccount = function(accountName)
