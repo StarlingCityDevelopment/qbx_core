@@ -1,6 +1,16 @@
 local serverName = require 'config.shared'.serverName
 
+local function isServerOpen()
+    local hour = tonumber(os.date("%H"))
+    if not hour then return false end
+    return (hour >= 15) or (hour < 3)
+end
+
 local function checkUser(discord, role)
+    if not isServerOpen() then
+        return false
+    end
+
     local p = promise:new()
     local url = ("https://protectbot.starlingrp.fr/api/users/%s/%s/roles"):format(discord, GetConvar("discordGuildId", ""))
 
@@ -90,7 +100,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, "1294230484427083797")
+                return checkUser(discordId, "304600906270244864")
             end,
         },
     },
