@@ -6,8 +6,8 @@ local function isServerOpen()
     return (hour >= 15) or (hour < 3)
 end
 
-local function checkUser(discord, role)
-    if not isServerOpen() then
+local function checkUser(discord, role, skipOpenCheck)
+    if not skipOpenCheck and not isServerOpen() then
         return false
     end
 
@@ -88,7 +88,19 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, "447685920423149579")
+                return checkUser(discordId, "447685920423149579", true)
+            end,
+            cardOptions = { color = 'good' }
+        },
+        {
+            name = 'Managers Queue',
+            predicate = function(source)
+                local discordId = GetPlayerIdentifierByType(source, 'discord')
+                if not discordId then
+                    return false
+                end
+                discordId = discordId:gsub('discord:', '')
+                return checkUser(discordId, "1294232967689801779", true)
             end,
             cardOptions = { color = 'good' }
         },
