@@ -100,7 +100,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, "1294232967689801779", true)
+                return checkUser(discordId, "1294232960723325040", true)
             end,
             cardOptions = { color = 'good' }
         },
@@ -112,7 +112,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, "304600906270244864")
+                return checkUser(discordId, "1294230550491562015")
             end,
         },
     },
