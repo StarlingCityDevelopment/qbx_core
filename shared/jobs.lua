@@ -406,4 +406,19 @@ return {
             },
         },
     },
+    ['coffeenoir'] = {
+        label = 'Coffee Noir',
+        defaultDuty = true,
+        offDutyPay = false,
+        grades = {
+            [0] = {
+                name = 'Employé',
+            },
+            [1] = {
+                name = 'Directeur',
+                isboss = true,
+                bankAuth = true,
+            },
+        },
+    },
 }
