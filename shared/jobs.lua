@@ -327,8 +327,8 @@ return {
         },
     },
 
-    ['bennys'] = {
-        label = 'Benny\'s Motorworks',
+    ['cruisin'] = {
+        label = 'Cruisin Craftsmen',
         defaultDuty = true,
         offDutyPay = false,
         grades = {
@@ -343,8 +343,8 @@ return {
         },
     },
 
-    ['mosley'] = {
-        label = 'Mosley Auto',
+    ['lscustoms'] = {
+        label = 'Los Santos Customs',
         defaultDuty = true,
         offDutyPay = false,
         grades = {
