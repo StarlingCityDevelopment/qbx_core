@@ -56,46 +56,31 @@ return {
                 name = 'Diplomate',
             },
             [12] = {
-                name = 'Recrue Secret Service',
-            },
-            [13] = {
-                name = 'Agent Secret Service',
-            },
-            [14] = {
-                name = 'Sous Officier Garde Nationale',
-            },
-            [15] = {
-                name = 'Officier Garde Nationale',
-            },
-            [16] = {
-                name = 'Chef Adjoint Secret Service',
-            },
-            [17] = {
                 name = 'Ambassadeur',
             },
-            [18] = {
+            [13] = {
                 name = 'Responsable de Département',
             },
-            [19] = {
+            [14] = {
                 name = 'Responsable de Service',
             },
-            [20] = {
+            [15] = {
                 name = 'Secrétaire Adjoint',
             },
-            [21] = {
+            [16] = {
                 name = 'Secrétaire',
                 isboss = true,
             },
-            [22] = {
+            [17] = {
                 name = 'Chef de Cabinet',
                 isboss = true,
             },
-            [23] = {
+            [18] = {
                 name = 'Vice Gouverneur',
                 isboss = true,
                 bankAuth = true,
             },
-            [24] = {
+            [19] = {
                 name = 'Gouverneur',
                 isboss = true,
                 bankAuth = true,
@@ -254,6 +239,62 @@ return {
         },
     },
 
+    ['usss'] = {
+        type = 'leo',
+        label = 'United States Secret Service',
+        defaultDuty = true,
+        offDutyPay = false,
+        grades = {
+            [0] = {
+                name = 'Recruit',
+            },
+            [1] = {
+                name = 'Field Agent I',
+            },
+            [2] = {
+                name = 'Field Agent II',
+            },
+            [3] = {
+                name = 'Senior Field Agent',
+            },
+            [4] = {
+                name = 'Special Agent',
+            },
+            [5] = {
+                name = 'Senior Special Agent',
+            },
+            [5] = {
+                name = 'Supervisory Special Agent',
+            },
+            [6] = {
+                name = 'Special Agent In Charge',
+            },
+            [7] = {
+                name = 'Supervisor',
+            },
+            [8] = {
+                name = 'Senior Supervisor',
+            },
+            [9] = {
+                name = 'Lead Supervisor',
+            },
+            [10] = {
+                name = 'Assistant Commander',
+                isboss = true,
+            },
+            [11] = {
+                name = 'Assistant Deputy Commander',
+                isboss = true,
+                bankAuth = true,
+            },
+            [12] = {
+                name = 'Commander',
+                isboss = true,
+                bankAuth = true,
+            },
+        },
+    },
+
     ['dailyglobe'] = {
         label = 'Daily Globe',
         defaultDuty = true,
@@ -390,7 +431,7 @@ return {
             },
         },
     },
-    
+
     ['unicorn'] = {
         label = 'Vanilla Unicorn',
         defaultDuty = true,
