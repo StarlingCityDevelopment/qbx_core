@@ -115,6 +115,10 @@ return {
         SetVehicleDoorsLocked(vehicle, state == 'lock' and 2 or 1)
     end,
 
+    setVehicleLock = function(vehicle, state)
+        exports.qbx_vehiclekeys:SetLockState(vehicle, state)
+    end,
+
     getSocietyAccount = function(accountName)
         return exports['Renewed-Banking']:getAccountMoney(accountName)
     end,

@@ -587,7 +587,6 @@ function CheckPlayerData(source, playerData)
     playerData.citizenid = playerData.citizenid or GenerateUniqueIdentifier('citizenid')
     playerData.cid = playerData.charinfo?.cid or playerData.cid or 1
     playerData.money = playerData.money or {}
-    playerData.optin = playerData.optin or true
     for moneytype, startamount in pairs(config.money.moneyTypes) do
         playerData.money[moneytype] = playerData.money[moneytype] or startamount
     end
@@ -605,6 +604,7 @@ function CheckPlayerData(source, playerData)
     playerData.charinfo.cid = playerData.charinfo.cid or playerData.cid
     -- Metadata
     playerData.metadata = playerData.metadata or {}
+    playerData.metadata.optin = playerData.metadata.optin and true or false
     playerData.metadata.health = playerData.metadata.health or 200
     playerData.metadata.hunger = playerData.metadata.hunger or 100
     playerData.metadata.thirst = playerData.metadata.thirst or 100
@@ -1276,7 +1276,9 @@ function AddMoney(identifier, moneyType, amount, reason)
 
     player.PlayerData.money[moneyType] += amount
 
-    if not player.Offline then
+    if player.Offline then
+        SaveOffline(player.PlayerData)
+    else
         UpdatePlayerData(identifier)
 
         local tags = amount > 100000 and config.logging.role or nil
@@ -1331,7 +1333,9 @@ function RemoveMoney(identifier, moneyType, amount, reason)
 
     player.PlayerData.money[moneyType] -= amount
 
-    if not player.Offline then
+    if player.Offline then
+        SaveOffline(player.PlayerData)
+    else
         UpdatePlayerData(identifier)
 
         local tags = amount > 100000 and config.logging.role or nil
@@ -1379,7 +1383,9 @@ function SetMoney(identifier, moneyType, amount, reason)
 
     player.PlayerData.money[moneyType] = amount
 
-    if not player.Offline then
+    if player.Offline then
+        SaveOffline(player.PlayerData)
+    else
         UpdatePlayerData(identifier)
 
         local difference = amount - oldAmount

@@ -4948,8 +4948,8 @@ return {
         brand = 'Canis',
         model = 'polterminus',
         price = 999999999,
-        category = 'helicopters',
-        type = 'heli',
+        category = 'emergency',
+        type = 'automobile',
         hash = `polterminus`,
     },
     pony = {
@@ -8120,7 +8120,7 @@ return {
     gb811s2 = {
         spawnName = 'gb811s2',
         name = '811 S2',
-        brand = 'Pfister', 
+        brand = 'Pfister',
         model = 'gb811s2',
         price = 999999999,
         category = 'super',
@@ -8130,7 +8130,7 @@ return {
     gbadmiral = {
         spawnName = 'gbadmiral',
         name = 'Admiral',
-        brand = 'Dundreary', 
+        brand = 'Dundreary',
         model = 'gbadmiral',
         price = 999999999,
         category = 'sedans',
@@ -8140,7 +8140,7 @@ return {
     gbargento7f = {
         spawnName = 'gbargento7f',
         name = 'Argento 7F',
-        brand = 'Obey', 
+        brand = 'Obey',
         model = 'gbargento7f',
         price = 999999999,
         category = 'sedans',
@@ -8150,7 +8150,7 @@ return {
     gbbanshees = {
         spawnName = 'gbbanshees',
         name = 'Banshee S',
-        brand = 'Bravado', 
+        brand = 'Bravado',
         model = 'gbbanshees',
         price = 999999999,
         category = 'super',
@@ -8160,7 +8160,7 @@ return {
     gbbisonhf = {
         spawnName = 'gbbisonhf',
         name = 'Bison HF',
-        brand = 'Bravado', 
+        brand = 'Bravado',
         model = 'gbbisonhf',
         price = 999999999,
         category = 'offroad',
@@ -8170,7 +8170,7 @@ return {
     gbbisonstx = {
         spawnName = 'gbbisonstx',
         name = 'Bison STX',
-        brand = 'Bravado', 
+        brand = 'Bravado',
         model = 'gbbisonstx',
         price = 999999999,
         category = 'vans',
@@ -8180,7 +8180,7 @@ return {
     gbboxboy = {
         spawnName = 'gbboxboy',
         name = 'Boxboy',
-        brand = 'Brute', 
+        brand = 'Brute',
         model = 'gbboxboy',
         price = 999999999,
         category = 'vans',
@@ -8190,7 +8190,7 @@ return {
     gbboxboyft = {
         spawnName = 'gbboxboyft',
         name = 'Boxboy Food Truck',
-        brand = 'Brute', 
+        brand = 'Brute',
         model = 'gbboxboyft',
         price = 999999999,
         category = 'vans',
@@ -8200,7 +8200,7 @@ return {
     gbbriosof = {
         spawnName = 'gbbriosof',
         name = 'Brioso Fulmine',
-        brand = 'Grotti', 
+        brand = 'Grotti',
         model = 'gbbriosof',
         price = 999999999,
         category = 'compacts',
@@ -8210,7 +8210,7 @@ return {
     gbclubxr = {
         spawnName = 'gbclubxr',
         name = 'Club XR',
-        brand = 'BF', 
+        brand = 'BF',
         model = 'gbclubxr',
         price = 999999999,
         category = 'compacts',
@@ -8220,7 +8220,7 @@ return {
     gbcometcl = {
         spawnName = 'gbcometcl',
         name = 'Comet Classic',
-        brand = 'Pfister', 
+        brand = 'Pfister',
         model = 'gbcometcl',
         price = 999999999,
         category = 'sportsclassic',
@@ -8230,7 +8230,7 @@ return {
     gbcomets1t = {
         spawnName = 'gbcomets1t',
         name = 'Comet S1 Turbo',
-        brand = 'Pfister', 
+        brand = 'Pfister',
         model = 'gbcomets1t',
         price = 999999999,
         category = 'sportsclassic',
@@ -8240,7 +8240,7 @@ return {
     gbcomets2r = {
         spawnName = 'gbcomets2r',
         name = 'Comet S2R',
-        brand = 'Pfister', 
+        brand = 'Pfister',
         model = 'gbcomets2r',
         price = 999999999,
         category = 'sports',
@@ -8250,7 +8250,7 @@ return {
     gbcomets2rc = {
         spawnName = 'gbcomets2rc',
         name = 'Comet S2R C',
-        brand = 'Pfister', 
+        brand = 'Pfister',
         model = 'gbcomets2rc',
         price = 999999999,
         category = 'sports',
@@ -8260,7 +8260,7 @@ return {
     gbdominatorgsx = {
         spawnName = 'gbdominatorgsx',
         name = 'Dominator GSX',
-        brand = 'Vapid', 
+        brand = 'Vapid',
         model = 'gbdominatorgsx',
         price = 999999999,
         category = 'muscle',
@@ -8270,7 +8270,7 @@ return {
     gbemerussb1 = {
         spawnName = 'gbemerussb1',
         name = 'Emerus SB1',
-        brand = 'Progen', 
+        brand = 'Progen',
         model = 'gbemerussb1',
         price = 999999999,
         category = 'super',
@@ -8280,7 +8280,7 @@ return {
     gbemsbisonstx = {
         spawnName = 'gbemsbisonstx',
         name = 'Bison STX Ambolance',
-        brand = 'Bravado', 
+        brand = 'Bravado',
         model = 'gbemsbisonstx',
         price = 999999999,
         category = 'emergency',
@@ -8290,7 +8290,7 @@ return {
     gbemsesperta = {
         spawnName = 'gbemsesperta',
         name = 'Esperta Ambulance',
-        brand = 'Bravado', 
+        brand = 'Bravado',
         model = 'gbemsesperta',
         price = 999999999,
         category = 'emergency',
@@ -8300,7 +8300,7 @@ return {
     gbeon = {
         spawnName = 'gbeon',
         name = 'Eon',
-        brand = 'Coil', 
+        brand = 'Coil',
         model = 'gbeon',
         price = 999999999,
         category = 'sports',
@@ -8310,7 +8310,7 @@ return {
     gbesperta = {
         spawnName = 'gbesperta',
         name = 'Esperta',
-        brand = 'Bravado', 
+        brand = 'Bravado',
         model = 'gbesperta',
         price = 999999999,
         category = 'vans',
@@ -8320,7 +8320,7 @@ return {
     gbfirevoyager = {
         spawnName = 'gbfirevoyager',
         name = 'Voyager Fire Truck',
-        brand = 'MTL', 
+        brand = 'MTL',
         model = 'gbfirevoyager',
         price = 999999999,
         category = 'emergency',
@@ -8330,7 +8330,7 @@ return {
     gbgresleystx = {
         spawnName = 'gbgresleystx',
         name = 'Gresley STX',
-        brand = 'Bravado', 
+        brand = 'Bravado',
         model = 'gbgresleystx',
         price = 999999999,
         category = 'suv',
@@ -8370,7 +8370,7 @@ return {
     gbirisz = {
         spawnName = 'gbirisz',
         name = 'Iris Z',
-        brand = 'Bollokan', 
+        brand = 'Bollokan',
         model = 'gbirisz',
         price = 999999999,
         category = 'compacts',
@@ -8390,7 +8390,7 @@ return {
     gbkomodagt = {
         spawnName = 'gbkomodagt',
         name = 'Komoda GT',
-        brand = 'Lampadati', 
+        brand = 'Lampadati',
         model = 'gbkomodagt',
         price = 999999999,
         category = 'sportsclassic',
@@ -8400,7 +8400,7 @@ return {
     gblod4 = {
         spawnName = 'gblod4',
         name = 'LOD 4',
-        brand = 'Coil', 
+        brand = 'Coil',
         model = 'gblod4',
         price = 999999999,
         category = 'offroad',
@@ -8410,7 +8410,7 @@ return {
     gbmilano = {
         spawnName = 'gbmilano',
         name = 'Milano',
-        brand = 'Grotti', 
+        brand = 'Grotti',
         model = 'gbmilano',
         price = 999999999,
         category = 'sports',
@@ -8420,7 +8420,7 @@ return {
     gbmogulrs = {
         spawnName = 'gbmogulrs',
         name = 'Mogul RS',
-        brand = 'Karin', 
+        brand = 'Karin',
         model = 'gbmogulrs',
         price = 999999999,
         category = 'sports',
@@ -8430,7 +8430,7 @@ return {
     gbmojave = {
         spawnName = 'gbmojave',
         name = 'Mojave',
-        brand = 'Karin', 
+        brand = 'Karin',
         model = 'gbmojave',
         price = 999999999,
         category = 'offroad',
@@ -8440,7 +8440,7 @@ return {
     gbneonct = {
         spawnName = 'gbneonct',
         name = 'Neon CT',
-        brand = 'Pfister', 
+        brand = 'Pfister',
         model = 'gbneonct',
         price = 999999999,
         category = 'sports',
@@ -8450,7 +8450,7 @@ return {
     gbnexusrr = {
         spawnName = 'gbnexusrr',
         name = 'Nesus RR',
-        brand = 'Dinka', 
+        brand = 'Dinka',
         model = 'gbnexusrr',
         price = 999999999,
         category = 'sports',
@@ -8460,7 +8460,7 @@ return {
     gbpolbisonhf = {
         spawnName = 'gbpolbisonhf',
         name = 'Bison HF Police',
-        brand = 'Bravado', 
+        brand = 'Bravado',
         model = 'gbpolbisonhf',
         price = 999999999,
         category = 'emergency',
@@ -8480,7 +8480,7 @@ return {
     gbpolcometcl = {
         spawnName = 'gbpolcometcl',
         name = 'Comet Classic Police',
-        brand = 'Pfister', 
+        brand = 'Pfister',
         model = 'gbpolcometcl',
         price = 999999999,
         category = 'emergency',
@@ -8490,7 +8490,7 @@ return {
     gbpolcomets2r = {
         spawnName = 'gbpolcomets2r',
         name = 'Comet S2R Police',
-        brand = 'Pfister', 
+        brand = 'Pfister',
         model = 'gbpolcomets2r',
         price = 999999999,
         category = 'emergency',
@@ -8510,7 +8510,7 @@ return {
     gbpolprospero = {
         spawnName = 'gbpolprospero',
         name = 'Prospero Police',
-        brand = 'Pegassi', 
+        brand = 'Pegassi',
         model = 'gbpolprospero',
         price = 999999999,
         category = 'emergency',
@@ -8520,7 +8520,7 @@ return {
     gbpolsolace = {
         spawnName = 'gbpolsolace',
         name = 'Solace Police',
-        brand = 'Dewbauchee', 
+        brand = 'Dewbauchee',
         model = 'gbpolsolace',
         price = 999999999,
         category = 'emergency',
@@ -8540,7 +8540,7 @@ return {
     gbpolstarlight = {
         spawnName = 'gbpolstarlight',
         name = 'Starlight Police',
-        brand = 'Vulcar', 
+        brand = 'Vulcar',
         model = 'gbpolstarlight',
         price = 999999999,
         category = 'emergency',
@@ -8560,7 +8560,7 @@ return {
     gbpoltahomagt = {
         spawnName = 'gbpoltahomagt',
         name = 'Tahoma GT Police',
-        brand = 'Declasse', 
+        brand = 'Declasse',
         model = 'gbpoltahomagt',
         price = 999999999,
         category = 'emergency',
@@ -8570,7 +8570,7 @@ return {
     gbpoltr3s = {
         spawnName = 'gbpoltr3s',
         name = 'TR3-S Police',
-        brand = 'Progen', 
+        brand = 'Progen',
         model = 'gbpoltr3s',
         price = 999999999,
         category = 'emergency',
@@ -8590,7 +8590,7 @@ return {
     gbprospero = {
         spawnName = 'gbprospero',
         name = 'Prospero',
-        brand = 'Pegassi', 
+        brand = 'Pegassi',
         model = 'gbprospero',
         price = 999999999,
         category = 'super',
@@ -8600,7 +8600,7 @@ return {
     gbraidillon = {
         spawnName = 'gbraidillon',
         name = 'Raidillon',
-        brand = 'Toundra', 
+        brand = 'Toundra',
         model = 'gbraidillon',
         price = 999999999,
         category = 'sportsclassic',
@@ -8610,7 +8610,7 @@ return {
     gbronin = {
         spawnName = 'gbronin',
         name = 'Ronin',
-        brand = 'Emperor', 
+        brand = 'Emperor',
         model = 'gbronin',
         price = 999999999,
         category = 'sports',
@@ -8620,7 +8620,7 @@ return {
     gbsapphire = {
         spawnName = 'gbsapphire',
         name = 'Sapphire',
-        brand = 'Enus', 
+        brand = 'Enus',
         model = 'gbsapphire',
         price = 999999999,
         category = 'coupes',
@@ -8630,7 +8630,7 @@ return {
     gbschlagenr = {
         spawnName = 'gbschlagenr',
         name = 'Schlagen-R',
-        brand = 'Benefactor', 
+        brand = 'Benefactor',
         model = 'gbschlagenr',
         price = 999999999,
         category = 'sports',
@@ -8650,7 +8650,7 @@ return {
     gbschrauber = {
         spawnName = 'gbschrauber',
         name = 'Schrauber',
-        brand = 'Benefactor', 
+        brand = 'Benefactor',
         model = 'gbschrauber',
         price = 999999999,
         category = 'sports',
@@ -8660,7 +8660,7 @@ return {
     gbschwartzers = {
         spawnName = 'gbschwartzers',
         name = 'Schwartzer S',
-        brand = 'Benefactor', 
+        brand = 'Benefactor',
         model = 'gbschwartzers',
         price = 999999999,
         category = 'sports',
@@ -8670,7 +8670,7 @@ return {
     gbsentinelgts = {
         spawnName = 'gbsentinelgts',
         name = 'Senrinel GTS',
-        brand = 'Ubermacht', 
+        brand = 'Ubermacht',
         model = 'gbsentinelgts',
         price = 999999999,
         category = 'sports',
@@ -8680,7 +8680,7 @@ return {
     gbsidewinder = {
         spawnName = 'gbsidewinder',
         name = 'Sidewinder',
-        brand = 'Maxwell', 
+        brand = 'Maxwell',
         model = 'gbsidewinder',
         price = 999999999,
         category = 'sportsclassic',
@@ -8690,7 +8690,7 @@ return {
     gbsolace = {
         spawnName = 'gbsolace',
         name = 'Solace',
-        brand = 'Dewbauchee', 
+        brand = 'Dewbauchee',
         model = 'gbsolace',
         price = 999999999,
         category = 'sports',
@@ -8700,7 +8700,7 @@ return {
     gbsolacev = {
         spawnName = 'gbsolacev',
         name = 'Solace Vitesse',
-        brand = 'Dewbauchee', 
+        brand = 'Dewbauchee',
         model = 'gbsolacev',
         price = 999999999,
         category = 'sports',
@@ -8720,7 +8720,7 @@ return {
     gbstarlight = {
         spawnName = 'gbstarlight',
         name = 'Starlight',
-        brand = 'Vulcar', 
+        brand = 'Vulcar',
         model = 'gbstarlight',
         price = 999999999,
         category = 'suv',
@@ -8730,7 +8730,7 @@ return {
     gbsultanrsx = {
         spawnName = 'gbsultanrsx',
         name = 'Sultan RSX',
-        brand = 'Karin', 
+        brand = 'Karin',
         model = 'gbsultanrsx',
         price = 999999999,
         category = 'sports',
@@ -8750,7 +8750,7 @@ return {
     gbtaxiargento7f = {
         spawnName = 'gbtaxiargento7f',
         name = 'Argento 7F Taxi',
-        brand = 'Obey', 
+        brand = 'Obey',
         model = 'gbtaxiargento7f',
         price = 999999999,
         category = 'service',
@@ -8790,7 +8790,7 @@ return {
     gbtenfr = {
         spawnName = 'gbtenfr',
         name = 'Tenf R',
-        brand = 'Obey', 
+        brand = 'Obey',
         model = 'gbtenfr',
         price = 999999999,
         category = 'sports',
@@ -8800,7 +8800,7 @@ return {
     gbterrorizer = {
         spawnName = 'gbterrorizer',
         name = 'Terrorizer',
-        brand = 'HVY', 
+        brand = 'HVY',
         model = 'gbterrorizer',
         price = 999999999,
         category = 'offroad',
@@ -8810,7 +8810,7 @@ return {
     gbtr3s = {
         spawnName = 'gbtr3s',
         name = 'TR3-S',
-        brand = 'Progen', 
+        brand = 'Progen',
         model = 'gbtr3s',
         price = 999999999,
         category = 'super',
@@ -8840,7 +8840,7 @@ return {
     gbvivant = {
         spawnName = 'gbvivant',
         name = 'Vivant',
-        brand = 'Bordeaux', 
+        brand = 'Bordeaux',
         model = 'gbvivant',
         price = 999999999,
         category = 'compacts',
@@ -8850,7 +8850,7 @@ return {
     gbvivantgrb = {
         spawnName = 'gbvivantgrb',
         name = 'Vivant GRB',
-        brand = 'Bordeaux', 
+        brand = 'Bordeaux',
         model = 'gbvivantgrb',
         price = 999999999,
         category = 'sports',
@@ -8860,7 +8860,7 @@ return {
     gbvoyager = {
         spawnName = 'gbvoyager',
         name = 'Voyager 6x4-T',
-        brand = 'MTL', 
+        brand = 'MTL',
         model = 'gbvoyager',
         price = 999999999,
         category = 'commercial',
@@ -8870,7 +8870,7 @@ return {
     gbvoyager2 = {
         spawnName = 'gbvoyager2',
         name = 'Voyager 4x2-T ',
-        brand = 'MTL', 
+        brand = 'MTL',
         model = 'gbvoyager2',
         price = 999999999,
         category = 'commercial',
@@ -8880,7 +8880,7 @@ return {
     gbvoyagerb = {
         spawnName = 'gbvoyagerb',
         name = 'Voyager 6x4-B',
-        brand = 'MTL', 
+        brand = 'MTL',
         model = 'gbvoyagerb',
         price = 999999999,
         category = 'commercial',
@@ -8890,7 +8890,7 @@ return {
     gbvoyagerb2 = {
         spawnName = 'gbvoyagerb2',
         name = 'Voyager 4x2-B',
-        brand = 'MTL', 
+        brand = 'MTL',
         model = 'gbvoyagerb2',
         price = 999999999,
         category = 'commercial',
@@ -8900,7 +8900,7 @@ return {
     gbvoyagerg = {
         spawnName = 'gbvoyagerg',
         name = 'Voyager Trash Truck',
-        brand = 'MTL', 
+        brand = 'MTL',
         model = 'gbvoyagerg',
         price = 999999999,
         category = 'service',
@@ -8910,7 +8910,7 @@ return {
     gbvoyagerh = {
         spawnName = 'gbvoyagerh',
         name = 'Voyager 6x2-H',
-        brand = 'MTL', 
+        brand = 'MTL',
         model = 'gbvoyagerh',
         price = 999999999,
         category = 'commercial',
