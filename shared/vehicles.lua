@@ -3176,7 +3176,8 @@ return {
         model = 'hotknife',
         price = 999999999,
         category = 'muscle',
-        type = 'automobile',hash = `hotknife`,
+        type = 'automobile',
+        hash = `hotknife`,
 
     },
     hotring = {
@@ -4850,7 +4851,8 @@ return {
         model = 'police3',
         price = 999999999,
         category = 'emergency',
-        type = 'automobile',hash = `police3`,
+        type = 'automobile',
+        hash = `police3`,
 
     },
     police4 = {
@@ -8113,6 +8115,408 @@ return {
         category = 'suvs',
         type = 'automobile',
         hash = `woodlander`,
+    },
+
+    -- ONX
+
+    onx_polalamo = {
+        name = 'Alamo 2700LX',
+        brand = 'Declasse',
+        model = 'onx_polalamo',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polalamo`,
+    },
+
+    onx_polgrang = {
+        name = 'Granger 3600LX',
+        brand = 'Declasse',
+        model = 'onx_polgrang',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polgrang`,
+    },
+
+    onx_polgrang2 = {
+        name = 'Granger 3700LX',
+        brand = 'Declasse',
+        model = 'onx_polgrang2',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polgrang2`,
+    },
+
+    onx_polmerit = {
+        name = 'Merit',
+        brand = 'Declasse',
+        model = 'onx_polmerit',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polmerit`,
+    },
+
+    onx_polmerit3 = {
+        name = 'Merit Classic',
+        brand = 'Declasse',
+        model = 'onx_polmerit3',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polmerit3`,
+    },
+
+    onx_poltulip = {
+        name = 'Tulip M-100',
+        brand = 'Declasse',
+        model = 'onx_poltulip',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_poltulip`,
+    },
+
+    onx_polvigero = {
+        name = 'Vigero ZX',
+        brand = 'Declasse',
+        model = 'onx_polvigero',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polvigero`,
+    },
+
+    onx_polaleu = {
+        name = 'Aleutian',
+        brand = 'Vapid',
+        model = 'onx_polaleu',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polaleu`,
+    },
+
+    onx_polcara = {
+        name = 'Caracara Raid',
+        brand = 'Vapid',
+        model = 'onx_polcara',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polcara`,
+    },
+
+    onx_poldom = {
+        name = 'Dominator GT',
+        brand = 'Vapid',
+        model = 'onx_poldom',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_poldom`,
+    },
+
+    onx_polmonar = {
+        name = 'Monarch',
+        brand = 'Vapid',
+        model = 'onx_polmonar',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polmonar`,
+    },
+
+    onx_polsand = {
+        name = 'Sandstorm D205',
+        brand = 'Vapid',
+        model = 'onx_polsand',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polsand`,
+    },
+
+    onx_polsandsc = {
+        name = 'Sandstorm D205 SWB',
+        brand = 'Vapid',
+        model = 'onx_polsandsc',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polsandsc`,
+    },
+
+    onx_polsandxl = {
+        name = 'Sandstorm D205 XL',
+        brand = 'Vapid',
+        model = 'onx_polsandxl',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polsandxl`,
+    },
+
+    onx_polsandh = {
+        name = 'Sandstorm D205 Hellenbach',
+        brand = 'Vapid',
+        model = 'onx_polsandh',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polsandh`,
+    },
+
+    onx_polscout = {
+        name = 'Scout (2024-2025)',
+        brand = 'Vapid',
+        model = 'onx_polscout',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polscout`,
+    },
+
+    onx_polscout2 = {
+        name = 'Scout Classic',
+        brand = 'Vapid',
+        model = 'onx_polscout2',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polscout2`,
+    },
+
+    onx_poltavros = {
+        name = 'Tavros',
+        brand = 'Vapid',
+        model = 'onx_poltavros',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_poltavros`,
+    },
+
+    onx_polbison4 = {
+        name = 'Bison 25XD',
+        brand = 'Bravado',
+        model = 'onx_polbison4',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polbison4`,
+    },
+
+    onx_polbison = {
+        name = 'Bison 35XD',
+        brand = 'Bravado',
+        model = 'onx_polbison',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polbison`,
+    },
+
+    onx_polbison2 = {
+        name = 'Bison 45XD',
+        brand = 'Bravado',
+        model = 'onx_polbison2',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polbison2`,
+    },
+
+    onx_polbison3 = {
+        name = 'Bison 45XD Sasquatch',
+        brand = 'Bravado',
+        model = 'onx_polbison3',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polbison3`,
+    },
+
+    onx_polbuff = {
+        name = 'Buffalo A/C',
+        brand = 'Bravado',
+        model = 'onx_polbuff',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polbuff`,
+    },
+
+    onx_polbuffhf = {
+        name = 'Buffalo Hellfire',
+        brand = 'Bravado',
+        model = 'onx_polbuffhf',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polbuffhf`,
+    },
+
+    onx_poldorado2 = {
+        name = 'Dorado',
+        brand = 'Bravado',
+        model = 'onx_poldorado2',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_poldorado2`,
+    },
+
+    onx_poldorado = {
+        name = 'Dorado AC',
+        brand = 'Bravado',
+        model = 'onx_poldorado',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_poldorado`,
+    },
+
+    onx_polgaunt = {
+        name = 'Gauntlet Hellfire',
+        brand = 'Bravado',
+        model = 'onx_polgaunt',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polgaunt`,
+    },
+
+    onx_polcava = {
+        name = 'Cavalcade XL',
+        brand = 'Albany',
+        model = 'onx_polcava',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polcava`,
+    },
+
+    onx_polvstr = {
+        name = 'Presidente VSTR',
+        brand = 'Albany',
+        model = 'onx_polvstr',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polvstr`,
+    },
+
+    onx_polcon = {
+        name = 'Conada',
+        brand = 'Buckingham',
+        model = 'onx_polcon',
+        price = 999999999,
+        category = 'emergency',
+        type = 'helicopter',
+        hash = `onx_polcon`,
+    },
+
+    onx_polkandra = {
+        name = 'Kandra',
+        brand = 'Übermacht',
+        model = 'onx_polkandra',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polkandra`,
+    },
+
+    onx_polinvict = {
+        name = 'Invictus',
+        brand = 'Canis',
+        model = 'onx_polinvict',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polinvict`,
+    },
+
+    onx_polinvict2 = {
+        name = 'Invictus Overland',
+        brand = 'Canis',
+        model = 'onx_polinvict2',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polinvict2`,
+    },
+
+    onx_polsem = {
+        name = 'Seminole Frontier',
+        brand = 'Canis',
+        model = 'onx_polsem',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polsem`,
+    },
+
+    onx_polterm = {
+        name = 'Terminus',
+        brand = 'Canis',
+        model = 'onx_polterm',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polterm`,
+    },
+
+    onx_polterm2 = {
+        name = 'Terminus Overland',
+        brand = 'Canis',
+        model = 'onx_polterm2',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polterm2`,
+    },
+
+    onx_polregent = {
+        name = 'Regent',
+        brand = 'Brute',
+        model = 'onx_polregent',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polregent`,
+    },
+
+    onx_polregentxl = {
+        name = 'Regent XL',
+        brand = 'Brute',
+        model = 'onx_polregentxl',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polregentxl`,
+    },
+
+    onx_polstalk = {
+        name = 'Landstalker',
+        brand = 'Dundreary',
+        model = 'onx_polstalk',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polstalk`,
+    },
+
+    onx_polverus = {
+        name = 'Verus',
+        brand = 'Dinka',
+        model = 'onx_polverus',
+        price = 999999999,
+        category = 'emergency',
+        type = 'automobile',
+        hash = `onx_polverus`,
     },
 
     -- GABZs
