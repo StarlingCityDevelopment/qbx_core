@@ -9321,4 +9321,26 @@ return {
         type = 'automobile',
         hash = `gbvoyagerh`,
     },
+
+    -- Voodoo
+
+    garbagedoo = {
+        name = 'Garbage Doo',
+        brand = 'Jobuilt',
+        model = 'garbagedoo',
+        price = 999999999,
+        category = 'service',
+        type = 'automobile',
+        hash = `garbagedoo`,
+    },
+
+    garbagedoo2 = {
+        name = 'Garbage Doo Closed',
+        brand = 'Jobuilt',
+        model = 'garbagedoo2',
+        price = 999999999,
+        category = 'service',
+        type = 'automobile',
+        hash = `garbagedoo2`,
+    }
 }
