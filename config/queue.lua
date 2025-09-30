@@ -1,8 +1,31 @@
 local serverName = require 'config.shared'.serverName
 
+--- Check if the current time is within the allowed queue hours.
+---@return boolean
+local function checkTime()
+    local hour = tonumber(os.date('%H'))
+    local openHour = tonumber(GetConvar('queueOpenHour', '15'))
+    local closeHour = tonumber(GetConvar('queueCloseHour', '3'))
+
+    if openHour == 0 and closeHour == 24 then
+        return true
+    end
+
+    if openHour < closeHour then
+        return hour >= openHour and hour < closeHour
+    else
+        return hour >= openHour or hour < closeHour
+    end
+end
+
 local function checkUser(discord, role, skipOpenCheck)
     local p = promise:new()
     local url = ("https://protectbot.starlingrp.fr/api/users/%s/%s/roles"):format(discord, GetConvar("discordGuildId", ""))
+
+    if not skipOpenCheck and not checkTime() then
+        p:resolve(false)
+        return Citizen.Await(p)
+    end
 
     local success, result = pcall(function()
         PerformHttpRequest(url, function(code, body, head)
@@ -78,7 +101,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, "1294233625440817222", true)
+                return checkUser(discordId, "1294233625440817222", true) or false
             end,
             cardOptions = { color = 'good' }
         },
@@ -90,7 +113,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, "1294232960723325040", true)
+                return checkUser(discordId, "1294232960723325040", true) or false
             end,
             cardOptions = { color = 'good' }
         },
@@ -102,7 +125,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, (GetConvar('environment', 'production') == 'development') and "1294230550491562015" or "1294230484427083797")
+                return checkUser(discordId, (GetConvar('environment', 'production') == 'development') and "1294231979759505448" or "1294230484427083797") or false
             end,
         },
     },
