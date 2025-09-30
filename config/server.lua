@@ -78,7 +78,7 @@ return {
         whitelist = false, -- Enable or disable whitelist on the server
         whitelistPermission = 'admin', -- Permission that's able to enter the server when the whitelist is on
         discord = '', -- Discord invite link
-        checkDuplicateLicense = true, -- Check for duplicate rockstar license on join
+        checkDuplicateLicense = (not GetConvar('environment', 'production') == 'development'), -- Check for duplicate rockstar license on join
         ---@deprecated use cfg ACE system instead
         permissions = { 'god', 'admin', 'mod' }, -- Add as many groups as you want here after creating them in your server.cfg
     },
