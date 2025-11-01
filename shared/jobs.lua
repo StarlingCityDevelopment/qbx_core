@@ -342,10 +342,24 @@ return {
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Employé',
+                name = 'Recru',
             },
             [1] = {
-                name = 'Directeur',
+                name = 'Employé',
+            },
+            [2] = {
+                name = 'Employé Expérimenté',
+            },
+            [3] = {
+                name = 'Manager',
+                isboss = true,
+            },
+            [4] = {
+                name = 'Co-Patron',
+                isboss = true,
+            },
+            [5] = {
+                name = 'Patron',
                 isboss = true,
                 bankAuth = true,
             },
