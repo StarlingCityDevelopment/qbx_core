@@ -125,7 +125,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, (GetConvar('environment', 'production') == 'development') and "1294231979759505448" or "1294230484427083797") or false
+                return checkUser(discordId, (GetConvar('environment', 'production') == 'development') and "1294231979759505448" or "1294230484427083797", GetConvar('environment', 'production') == 'development') or false
             end,
         },
     },
