@@ -107,11 +107,7 @@ return {
     },
 
     giveVehicleKeys = function(src, plate, vehicle)
-        if GetResourceState('qbx_vehiclekeys') == 'started' then
-            return exports.qbx_vehiclekeys:GiveKeys(src, vehicle, false, true)
-        end
-        local model = QBX.Shared.VehicleHashes[GetEntityModel(vehicle)].model
-        return GetResourceState('qbx_vehiclekeys') ~= 'started' or exports['qbx_vehiclekeys']:GiveServerKeys(src, plate, model)
+        return exports.qbx_vehiclekeys:GiveKeys(src, vehicle, false, true)
     end,
 
     setVehicleLock = function(vehicle, state)

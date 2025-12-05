@@ -9342,5 +9342,26 @@ return {
         category = 'service',
         type = 'automobile',
         hash = `garbagedoo2`,
-    }
+    },
+
+    -- Starling
+
+    bcat = {
+        name = "Tarv",
+        brand = "Vapid",
+        model = "bcat",
+        price = 999999999,
+        category = "emergency",
+        type = "automobile",
+        hash = `bcat`,
+    },
+    bcat1 = {
+        name = "Tarv Heavy",
+        brand = "Vapid",
+        model = "bcat1",
+        price = 999999999,
+        category = "emergency",
+        type = "automobile",
+        hash = `bcat1`,
+    },
 }

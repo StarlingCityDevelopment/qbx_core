@@ -79,9 +79,6 @@ return {
 
     --- Only used by QB bridge
     hasKeys = function(plate, vehicle)
-        if GetResourceState('qs-vehiclekeys') == 'started' then
-            return exports.qbx_vehiclekeys:HasKeys(vehicle)
-        end
-        return GetResourceState('qs-vehiclekeys') ~= 'started' or exports['qs-vehiclekeys']:GetKey(plate)
+        return GetResourceState('qbx_vehiclekeys') ~= 'started' or exports.qbx_vehiclekeys:HasKeys(vehicle)
     end,
 }
