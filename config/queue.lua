@@ -1,3 +1,4 @@
+local devServer = GetConvar('environment', 'production') == 'development'
 local serverName = require 'config.shared'.serverName
 
 --- Check if the current time is within the allowed queue hours.
@@ -125,7 +126,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, (GetConvar('environment', 'production') == 'development') and "1294231979759505448" or "1294230484427083797", GetConvar('environment', 'production') == 'development') or false
+                return checkUser(discordId, not devServer and "1294230484427083797", devServer) or false
             end,
         },
     },
