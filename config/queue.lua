@@ -21,7 +21,8 @@ end
 
 local function checkUser(discord, role, skipOpenCheck)
     local p = promise:new()
-    local url = ("https://protectbot.starlingrp.fr/api/users/%s/%s/roles"):format(discord, GetConvar("discordGuildId", ""))
+    local botUrl = GetConvar("bot_url", "https://protect.starlingrp.fr/api/")
+    local url = (botUrl .. "users/%s/%s/roles"):format(discord, GetConvar("discordGuildId", ""))
 
     if not skipOpenCheck and not checkTime() then
         p:resolve(false)
