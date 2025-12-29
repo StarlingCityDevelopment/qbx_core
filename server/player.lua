@@ -158,6 +158,7 @@ local function toPlayerJob(jobName, job, grade)
         name = jobName,
         label = job.label,
         isboss = job.grades[grade].isboss or false,
+        bankAuth = job.grades[grade].bankAuth or false,
         onduty = job.defaultDuty or false,
         payment = job.grades[grade].payment or 0,
         type = job.type,
@@ -804,7 +805,8 @@ function CreatePlayer(playerData, Offline)
 
         amount = tonumber(amount) --[[@as number]]
 
-        self.PlayerData.metadata[self.PlayerData.job.name].reputation += amount
+        local existingAmount = self.PlayerData.metadata.jobrep[self.PlayerData.job.name]
+        self.PlayerData.metadata.jobrep[self.PlayerData.job.name] = existingAmount + amount
 
         ---@diagnostic disable-next-line: param-type-mismatch
         UpdatePlayerData(self.Offline and self.PlayerData.citizenid or self.PlayerData.source)

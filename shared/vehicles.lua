@@ -611,7 +611,7 @@ return {
         model = "blimp",
         price = 999999999,
         category = "planes",
-        type = "plane",
+        type = "heli",
         hash = `blimp`,
     },
     blimp2 = {
@@ -620,7 +620,7 @@ return {
         model = "blimp2",
         price = 999999999,
         category = "planes",
-        type = "plane",
+        type = "heli",
         hash = `blimp2`,
     },
     blimp3 = {
@@ -629,7 +629,7 @@ return {
         model = "blimp3",
         price = 999999999,
         category = "planes",
-        type = "plane",
+        type = "heli",
         hash = `blimp3`,
     },
     blista = {
