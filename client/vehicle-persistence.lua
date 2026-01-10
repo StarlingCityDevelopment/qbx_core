@@ -8,7 +8,11 @@ local netId
 local vehicle
 local seat
 
-local zones = {}
+local vehicleEntries = {}
+local spawnedVehicles = {}
+local SPAWN_DISTANCE = 75.0
+local CHECK_INTERVAL = 1000
+
 local watchedKeys = {
     'bodyHealth',
     'engineHealth',
@@ -66,18 +70,45 @@ local function sendPropsDiff()
     TriggerServerEvent('qbx_core:server:vehiclePropsChanged', netId, diff)
 end
 
----@param vehicles table
-local function createVehicleZones(vehicles)
+---Adds vehicles to the grid for spatial lookup
+---@param vehicles table<number, vector4>
+local function addVehiclesToGrid(vehicles)
     for id, coords in pairs(vehicles) do
-        if not zones[id] then
-            zones[id] = lib.points.new({
-                distance = 75.0,
-                coords = coords,
-                onEnter = function()
-                    TriggerServerEvent('qbx_core:server:spawnVehicle', id, coords)
-                end
-            })
+        if not vehicleEntries[id] then
+            local entry = {
+                coords = vec3(coords.x, coords.y, coords.z),
+                radius = SPAWN_DISTANCE,
+                id = id,
+                spawnCoords = coords,
+            }
+            vehicleEntries[id] = entry
+            lib.grid.addEntry(entry)
         end
+    end
+end
+
+---Removes a vehicle from the grid
+---@param id number
+local function removeVehicleFromGrid(id)
+    local entry = vehicleEntries[id]
+    if entry then
+        lib.grid.removeEntry(entry)
+        vehicleEntries[id] = nil
+        spawnedVehicles[id] = nil
+    end
+end
+
+local function checkNearbyVehicles()
+    local playerCoords = GetEntityCoords(cache.ped)
+    local nearbyEntries = lib.grid.getNearbyEntries(playerCoords, function(entry)
+        local dist = #(playerCoords - entry.coords)
+        return dist <= SPAWN_DISTANCE and not spawnedVehicles[entry.id]
+    end)
+
+    for i = 1, #nearbyEntries do
+        local entry = nearbyEntries[i]
+        spawnedVehicles[entry.id] = true
+        TriggerServerEvent('qbx_core:server:spawnVehicle', entry.id, entry.spawnCoords)
     end
 end
 
@@ -104,12 +135,16 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     local vehicles = lib.callback.await('qbx_core:server:getVehiclesToSpawn', 2500)
     if not vehicles then return end
 
-    createVehicleZones(vehicles)
+    addVehiclesToGrid(vehicles)
+
+    CreateThread(function()
+        while LocalPlayer.state.isLoggedIn and next(vehicleEntries) do
+            checkNearbyVehicles()
+            Wait(CHECK_INTERVAL)
+        end
+    end)
 end)
 
 RegisterNetEvent('qbx_core:client:removeVehZone', function(id)
-    if not zones[id] then return end
-
-    zones[id]:remove()
-    zones[id] = nil
+    removeVehicleFromGrid(id)
 end)

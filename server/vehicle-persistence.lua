@@ -276,6 +276,7 @@ end)
 AddEventHandler('onResourceStart', function(resourceName)
     if resourceName ~= 'qbx_vehicles' then return end
 
+    cachedVehicles = {}
     spawnedVehicleIds = {}
 
     local vehicles = exports.qbx_vehicles:GetPlayerVehicles({ states = 0 })
