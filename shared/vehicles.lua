@@ -8473,7 +8473,7 @@ return {
         model = "onx_polcon",
         price = 999999999,
         category = "emergency",
-        type = "helicopter",
+        type = "helicopters",
         hash = `onx_polcon`,
     },
     onx_polmav = {
@@ -8482,7 +8482,7 @@ return {
         model = "onx_polmav",
         price = 999999999,
         category = "emergency",
-        type = "helicopter",
+        type = "helicopters",
         hash = `onx_polmav`,
     },
     onx_polmav2 = {
@@ -8491,7 +8491,7 @@ return {
         model = "onx_polmav2",
         price = 999999999,
         category = "emergency",
-        type = "helicopter",
+        type = "helicopters",
         hash = `onx_polmav2`,
     },
     onx_polkandra = {

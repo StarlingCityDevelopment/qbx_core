@@ -1,8 +1,6 @@
 local enable = GetConvar('qbx:enableVehiclePersistence', 'false') == 'true'
 local full = GetConvar('qbx:vehiclePersistenceType', 'semi') == 'full'
 
----A persisted vehicle will respawn when deleted. Only works for player owned vehicles.
----Vehicles spawned using lib are automatically persisted
 ---@param vehicle number
 local function enablePersistence(vehicle)
     Entity(vehicle).state:set('persisted', true, true)
@@ -10,7 +8,6 @@ end
 
 exports('EnablePersistence', enablePersistence)
 
----A vehicle without persistence will not respawn when deleted.
 ---@param vehicle number
 function DisablePersistence(vehicle)
     Entity(vehicle).state:set('persisted', nil, true)
@@ -23,7 +20,8 @@ if not enable then return end
 assert(lib.checkDependency('qbx_vehicles', '1.4.1', true))
 
 local function getVehicleId(vehicle)
-    return Entity(vehicle).state.vehicleid or exports.qbx_vehicles:GetVehicleIdByPlate(GetVehicleNumberPlateText(vehicle))
+    return Entity(vehicle).state.vehicleid or
+    exports.qbx_vehicles:GetVehicleIdByPlate(GetVehicleNumberPlateText(vehicle))
 end
 
 RegisterNetEvent('qbx_core:server:vehiclePropsChanged', function(netId, diff)
@@ -104,43 +102,83 @@ AddEventHandler('entityRemoved', function(entity)
     if not vehicleId then return end
 
     local playerVehicle = exports.qbx_vehicles:GetPlayerVehicle(vehicleId)
+    if not playerVehicle or not playerVehicle.props then return end
 
     if DoesEntityExist(entity) then
         Entity(entity).state:set('persisted', nil, true)
         DeleteVehicle(entity)
     end
 
-    local _, veh = qbx.spawnVehicle({
-        model = playerVehicle.props.model,
-        spawnSource = vec4(coords.x, coords.y, coords.z, heading),
-        bucket = bucket,
-        props = playerVehicle.props
-    })
+    SetTimeout(100, function()
+        local success, veh = pcall(function()
+            return qbx.spawnVehicle({
+                model = playerVehicle.props.model,
+                spawnSource = vec4(coords.x, coords.y, coords.z, heading),
+                bucket = bucket,
+                props = playerVehicle.props
+            })
+        end)
 
-    Entity(veh).state:set('sessionId', sessionId, true)
-    Entity(veh).state:set('vehicleid', vehicleId, false)
+        if not success or not veh then
+            lib.print.warn(('Failed to respawn persisted vehicle %s'):format(vehicleId))
+            return
+        end
 
-    for i = 1, #passengers do
-        local passenger = passengers[i]
-        SetPedIntoVehicle(passenger.ped, veh, passenger.seat)
-    end
+        local _, vehicle = success, veh
+        if type(veh) == 'table' then
+            vehicle = veh[2] or veh
+        elseif type(success) == 'number' then
+            vehicle = success
+        end
+
+        if not DoesEntityExist(vehicle) then
+            lib.print.warn(('Respawned vehicle %s does not exist'):format(vehicleId))
+            return
+        end
+
+        Entity(vehicle).state:set('sessionId', sessionId, true)
+        Entity(vehicle).state:set('vehicleid', vehicleId, false)
+        Entity(vehicle).state:set('persisted', true, true)
+
+        for i = 1, #passengers do
+            local passenger = passengers[i]
+            if DoesEntityExist(passenger.ped) then
+                SetPedIntoVehicle(passenger.ped, vehicle, passenger.seat)
+            end
+        end
+    end)
 end)
 
 if not full then return end
 
+local SPAWN_DELAY = 100
+local MAX_SPAWN_RETRIES = 3
 local cachedVehicles = {}
 local vehicleSpawnQueue = {}
+local spawnedVehicleIds = {}
 local isProcessingQueue = false
 local config = require 'config.server'
 
 ---@param id number
 ---@return boolean
 local function isVehicleSpawned(id)
-    local vehicles = GetGamePool('CVehicle')
+    if spawnedVehicleIds[id] then
+        local vehicles = GetGamePool('CVehicle')
+        for i = 1, #vehicles do
+            local vehicle = vehicles[i]
+            if Entity(vehicle).state.vehicleid == id then
+                return true
+            end
+        end
 
+        spawnedVehicleIds[id] = nil
+    end
+
+    local vehicles = GetGamePool('CVehicle')
     for i = 1, #vehicles do
         local vehicle = vehicles[i]
         if Entity(vehicle).state.vehicleid == id then
+            spawnedVehicleIds[id] = true
             return true
         end
     end
@@ -187,18 +225,89 @@ local function saveAllVehicle()
     end
 end
 
+---@param request table
+---@param retryCount number?
+---@return boolean success
+local function trySpawnVehicle(request, retryCount)
+    retryCount = retryCount or 0
+
+    if isVehicleSpawned(request.id) then
+        lib.print.debug(('Vehicle %s already spawned, skipping'):format(request.id))
+        return true
+    end
+
+    local success, result = pcall(function()
+        return qbx.spawnVehicle({
+            spawnSource = vec4(request.coords.x, request.coords.y, request.coords.z, request.coords.w),
+            model = request.model,
+            props = request.props
+        })
+    end)
+
+    if not success then
+        lib.print.warn(('Failed to spawn vehicle %s: %s'):format(request.id, tostring(result)))
+        if retryCount < MAX_SPAWN_RETRIES then
+            Wait(SPAWN_DELAY * (retryCount + 1))
+            return trySpawnVehicle(request, retryCount + 1)
+        end
+        return false
+    end
+
+    local veh = result
+    if type(result) == 'table' then
+        veh = result[2] or result
+    end
+
+    if not veh or not DoesEntityExist(veh) then
+        lib.print.warn(('Vehicle %s spawn returned invalid entity'):format(request.id))
+        if retryCount < MAX_SPAWN_RETRIES then
+            Wait(SPAWN_DELAY * (retryCount + 1))
+            return trySpawnVehicle(request, retryCount + 1)
+        end
+        return false
+    end
+
+    TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
+    cachedVehicles[request.id] = nil
+    spawnedVehicleIds[request.id] = true
+    Entity(veh).state:set('vehicleid', request.id, false)
+    Entity(veh).state:set('persisted', true, true)
+    config.setVehicleLock(veh, config.persistence.lockState)
+
+    lib.print.debug(('Successfully spawned vehicle %s'):format(request.id))
+    return true
+end
+
 ---@param coords vector4
 ---@param id number
 ---@param model string
 ---@param props table
 local function spawnVehicle(coords, id, model, props)
-    if not coords or not id or not model or not props then return end
+    if not coords or not id or not model or not props then
+        lib.print.warn('spawnVehicle called with invalid parameters')
+        return
+    end
 
-    vehicleSpawnQueue[#vehicleSpawnQueue+1] = {
+    for i = 1, #vehicleSpawnQueue do
+        if vehicleSpawnQueue[i].id == id then
+            lib.print.debug(('Vehicle %s already in spawn queue'):format(id))
+            return
+        end
+    end
+
+    if isVehicleSpawned(id) then
+        lib.print.debug(('Vehicle %s already spawned'):format(id))
+        cachedVehicles[id] = nil
+        TriggerClientEvent('qbx_core:client:removeVehZone', -1, id)
+        return
+    end
+
+    vehicleSpawnQueue[#vehicleSpawnQueue + 1] = {
         coords = coords,
         id = id,
         model = model,
-        props = props
+        props = props,
+        addedAt = GetGameTimer()
     }
 
     if not isProcessingQueue then
@@ -208,18 +317,13 @@ local function spawnVehicle(coords, id, model, props)
             while #vehicleSpawnQueue > 0 do
                 local request = table.remove(vehicleSpawnQueue, 1)
 
-                if not isVehicleSpawned(request.id) then
-                    local _, veh = qbx.spawnVehicle({
-                        spawnSource = vec4(request.coords.x, request.coords.y, request.coords.z, request.coords.w),
-                        model = request.model,
-                        props = request.props
-                    })
-
-                    TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
-                    cachedVehicles[request.id] = nil
-                    Entity(veh).state:set('vehicleid', request.id, false)
-                    config.setVehicleLock(veh, config.persistence.lockState)
+                if GetGameTimer() - request.addedAt < 30000 then
+                    trySpawnVehicle(request)
+                else
+                    lib.print.debug(('Skipping stale spawn request for vehicle %s'):format(request.id))
                 end
+
+                Wait(SPAWN_DELAY)
             end
 
             isProcessingQueue = false
@@ -228,21 +332,33 @@ local function spawnVehicle(coords, id, model, props)
 end
 
 lib.callback.register('qbx_core:server:getVehiclesToSpawn', function()
+    for id in pairs(cachedVehicles) do
+        if isVehicleSpawned(id) then
+            cachedVehicles[id] = nil
+        end
+    end
     return cachedVehicles
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
     if resourceName ~= 'qbx_vehicles' then return end
 
-    local vehicles = exports.qbx_vehicles:GetPlayerVehicles({ states = 0 })
-    if not vehicles then return end
+    cachedVehicles = {}
+    spawnedVehicleIds = {}
 
-    for i = 1, #vehicles do
-        local vehicle = vehicles[i]
-        if vehicle.coords and vehicle.props and vehicle.props.plate and not isVehicleSpawned(vehicle.id) then
-            cachedVehicles[vehicle.id] = vehicle.coords
+    SetTimeout(1000, function()
+        local vehicles = exports.qbx_vehicles:GetPlayerVehicles({ states = 0 })
+        if not vehicles then return end
+
+        for i = 1, #vehicles do
+            local vehicle = vehicles[i]
+            if vehicle.coords and vehicle.props and vehicle.props.plate and not isVehicleSpawned(vehicle.id) then
+                cachedVehicles[vehicle.id] = vehicle.coords
+            end
         end
-    end
+
+        lib.print.info(('Loaded %d vehicles for persistence'):format(table.count and table.count(cachedVehicles) or 0))
+    end)
 end)
 
 AddEventHandler('onResourceStop', function(resourceName)
@@ -258,14 +374,25 @@ AddEventHandler('txAdmin:events:scheduledRestart', function(eventData)
 end)
 
 RegisterNetEvent('qbx_core:server:spawnVehicle', function(id, coords)
+    local src = source
     if not id or not coords then return end
 
+    local playerState = Player(src).state
+    local lastSpawnRequest = playerState.lastVehicleSpawnRequest or 0
+    if GetGameTimer() - lastSpawnRequest < 500 then
+        return
+    end
+    playerState.lastVehicleSpawnRequest = GetGameTimer()
+
     local cachedCoords = cachedVehicles[id]
-    if not cachedCoords or
-        cachedCoords.x ~= coords.x or
-        cachedCoords.y ~= coords.y or
-        cachedCoords.z ~= coords.z or
-        cachedCoords.w ~= coords.w then
+    if not cachedCoords then
+        return
+    end
+
+    local tolerance = 0.5
+    if math.abs(cachedCoords.x - coords.x) > tolerance or
+        math.abs(cachedCoords.y - coords.y) > tolerance or
+        math.abs(cachedCoords.z - coords.z) > tolerance then
         return
     end
 
@@ -275,22 +402,25 @@ RegisterNetEvent('qbx_core:server:spawnVehicle', function(id, coords)
     spawnVehicle(coords, id, vehicle.modelName, vehicle.props)
 end)
 
-RegisterNetEvent('qbx_core:server:vehiclePositionChanged', function(netId)
-    local src = source
+CreateThread(function()
+    while true do
+        Wait(60000)
 
-    local ped = GetPlayerPed(src)
-    local vehicle = NetworkGetEntityFromNetworkId(netId)
+        local activeIds = {}
+        local vehicles = GetGamePool('CVehicle')
 
-    local vehicleId = getVehicleId(vehicle)
-    if not vehicleId then return end
+        for i = 1, #vehicles do
+            local vehicle = vehicles[i]
+            local id = Entity(vehicle).state.vehicleid
+            if id then
+                activeIds[id] = true
+            end
+        end
 
-    local pedCoords = GetEntityCoords(ped)
-    local vehicleCoords = GetEntityCoords(vehicle)
-    local vehicleHeading = GetEntityHeading(vehicle)
-
-    if #(pedCoords - vehicleCoords) > 10.0 then
-        return
+        for id in pairs(spawnedVehicleIds) do
+            if not activeIds[id] then
+                spawnedVehicleIds[id] = nil
+            end
+        end
     end
-
-    saveVehicle(vehicle, vehicleCoords, vehicleHeading)
 end)
