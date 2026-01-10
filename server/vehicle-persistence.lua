@@ -131,7 +131,7 @@ if not full then return end
 local cachedVehicles = {}
 local vehicleSpawnQueue = {}
 local isProcessingQueue = false
--- local config = require 'config.server'
+local config = require 'config.server'
 local SPAWN_TIMEOUT = 5000
 
 ---@param id number
@@ -243,7 +243,7 @@ local function spawnVehicle(coords, id, model, props)
 
                     if entity and DoesEntityExist(entity) then
                         Entity(entity).state:set('vehicleid', request.id, false)
-                        -- config.setVehicleLock(veh, config.persistence.lockState)
+                        config.setVehicleLock(veh, config.persistence.lockState)
                     end
 
                     TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
@@ -261,7 +261,7 @@ lib.callback.register('qbx_core:server:getVehiclesToSpawn', function()
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
-    -- if resourceName ~= 'qbx_vehicles' then return end
+    if resourceName ~= 'qbx_vehicles' then return end
 
     local vehicles = exports.qbx_vehicles:GetPlayerVehicles({ states = 0 })
     if not vehicles then return end
