@@ -39,9 +39,10 @@ local function checkUser(discord, role, skipOpenCheck)
             end
 
             local data = json.decode(body)
-            
+
             if not data or not data.success then
-                print(("^1[Queue] API Data Error for player %s. Response was invalid or success=false.^7"):format(discord))
+                print(("^1[Queue] API Data Error for player %s. Response was invalid or success=false.^7"):format(
+                    discord))
                 p:resolve(false)
                 return
             end
@@ -73,6 +74,7 @@ local function checkUser(discord, role, skipOpenCheck)
 
     return Citizen.Await(p)
 end
+
 return {
     ---Amount of seconds to wait before removing a player from the queue after disconnecting while waiting.
     timeoutSeconds = 30,
@@ -131,7 +133,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, devServer and false or "1294230484427083797", devServer) or false
+                return checkUser(discordId, not devServer and "1294230484427083797", devServer) or false
             end,
         },
     },
@@ -165,7 +167,8 @@ return {
         local cardOptions = subQueue.cardOptions or {}
 
         local progressAmount = 7 -- amount of progress shown between the queue & server
-        local playerColumn = pos == 1 and progressAmount or (progressAmount - math.ceil(pos / (size / progressAmount)) + 1)
+        local playerColumn = pos == 1 and progressAmount or
+            (progressAmount - math.ceil(pos / (size / progressAmount)) + 1)
 
         local progressTextReplacements = {
             [1] = {
