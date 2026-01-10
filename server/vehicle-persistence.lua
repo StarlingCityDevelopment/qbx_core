@@ -1,17 +1,12 @@
 local enable = GetConvar('qbx:enableVehiclePersistence', 'false') == 'true'
 local full = GetConvar('qbx:vehiclePersistenceType', 'semi') == 'full'
 
----A persisted vehicle will respawn when deleted. Only works for player owned vehicles.
----Vehicles spawned using lib are automatically persisted
----@param vehicle number
 local function enablePersistence(vehicle)
     Entity(vehicle).state:set('persisted', true, true)
 end
 
 exports('EnablePersistence', enablePersistence)
 
----A vehicle without persistence will not respawn when deleted.
----@param vehicle number
 function DisablePersistence(vehicle)
     Entity(vehicle).state:set('persisted', nil, true)
 end
@@ -24,7 +19,7 @@ assert(lib.checkDependency('qbx_vehicles', '1.4.1', true))
 
 local function getVehicleId(vehicle)
     return Entity(vehicle).state.vehicleid or
-    exports.qbx_vehicles:GetVehicleIdByPlate(GetVehicleNumberPlateText(vehicle))
+        exports.qbx_vehicles:GetVehicleIdByPlate(GetVehicleNumberPlateText(vehicle))
 end
 
 RegisterNetEvent('qbx_core:server:vehiclePropsChanged', function(netId, diff)
@@ -111,12 +106,16 @@ AddEventHandler('entityRemoved', function(entity)
         DeleteVehicle(entity)
     end
 
-    local _, veh = qbx.spawnVehicle({
+    local success, veh = spawnVehicleWithTimeout({
         model = playerVehicle.props.model,
         spawnSource = vec4(coords.x, coords.y, coords.z, heading),
         bucket = bucket,
         props = playerVehicle.props
-    })
+    }, SPAWN_TIMEOUT)
+
+    if not success or not veh then
+        return
+    end
 
     Entity(veh).state:set('sessionId', sessionId, true)
     Entity(veh).state:set('vehicleid', vehicleId, false)
@@ -132,35 +131,22 @@ if not full then return end
 local cachedVehicles = {}
 local vehicleSpawnQueue = {}
 local isProcessingQueue = false
-local spawnedVehicleIds = {}
-local config = require 'config.server'
-
-local SPAWN_BATCH_SIZE = 5
-local SPAWN_BATCH_DELAY = 100
-local SPAWN_YIELD_INTERVAL = 1
+-- local config = require 'config.server'
+local SPAWN_TIMEOUT = 5000
 
 ---@param id number
 ---@return boolean
 local function isVehicleSpawned(id)
-    if spawnedVehicleIds[id] then
-        return true
-    end
-
     local vehicles = GetGamePool('CVehicle')
+
     for i = 1, #vehicles do
         local vehicle = vehicles[i]
         if Entity(vehicle).state.vehicleid == id then
-            spawnedVehicleIds[id] = true
             return true
         end
     end
 
     return false
-end
-
----@param id number
-local function markVehicleSpawned(id)
-    spawnedVehicleIds[id] = true
 end
 
 --- Save the vehicle position to the database
@@ -202,18 +188,37 @@ local function saveAllVehicle()
     end
 end
 
+--- Spawn a vehicle with a timeout
+--- @param spawnData table
+--- @param timeout number
+--- @return number, number
+local function spawnVehicleWithTimeout(spawnData, timeout)
+    local netId, entity
+    local spawnCompleted = false
+
+    CreateThread(function()
+        netId, entity = qbx.spawnVehicle(spawnData)
+        spawnCompleted = true
+    end)
+
+    local startTime = GetGameTimer()
+    while not spawnCompleted and (GetGameTimer() - startTime) < timeout do
+        Wait(0)
+    end
+
+    if not spawnCompleted then
+        return nil, nil
+    end
+
+    return netId, entity
+end
+
 ---@param coords vector4
 ---@param id number
 ---@param model string
 ---@param props table
 local function spawnVehicle(coords, id, model, props)
     if not coords or not id or not model or not props then return end
-
-    for i = 1, #vehicleSpawnQueue do
-        if vehicleSpawnQueue[i].id == id then
-            return
-        end
-    end
 
     vehicleSpawnQueue[#vehicleSpawnQueue + 1] = {
         coords = coords,
@@ -226,39 +231,21 @@ local function spawnVehicle(coords, id, model, props)
         isProcessingQueue = true
 
         CreateThread(function()
-            local spawnedCount = 0
-
             while #vehicleSpawnQueue > 0 do
                 local request = table.remove(vehicleSpawnQueue, 1)
 
                 if not isVehicleSpawned(request.id) then
-                    local success, veh = pcall(function()
-                        local _, vehicle = qbx.spawnVehicle({
-                            spawnSource = vec4(request.coords.x, request.coords.y, request.coords.z, request.coords.w),
-                            model = request.model,
-                            props = request.props
-                        })
-                        return vehicle
-                    end)
+                    local _, entity = spawnVehicleWithTimeout({
+                        spawnSource = vec4(request.coords.x, request.coords.y, request.coords.z, request.coords.w),
+                        model = request.model,
+                        props = request.props
+                    }, SPAWN_TIMEOUT)
 
-                    if success and veh and DoesEntityExist(veh) then
-                        TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
-                        cachedVehicles[request.id] = nil
-                        markVehicleSpawned(request.id)
-                        Entity(veh).state:set('vehicleid', request.id, false)
-                        config.setVehicleLock(veh, config.persistence.lockState)
-                    else
-                        lib.print.warn(('Failed to spawn vehicle id %d (model: %s)'):format(request.id, request.model))
+                    if entity and DoesEntityExist(entity) then
+                        Entity(entity).state:set('vehicleid', request.id, false)
+                        -- config.setVehicleLock(veh, config.persistence.lockState)
                     end
 
-                    spawnedCount += 1
-                    Wait(SPAWN_YIELD_INTERVAL)
-
-                    if spawnedCount >= SPAWN_BATCH_SIZE then
-                        spawnedCount = 0
-                        Wait(SPAWN_BATCH_DELAY)
-                    end
-                else
                     TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
                     cachedVehicles[request.id] = nil
                 end
@@ -274,10 +261,7 @@ lib.callback.register('qbx_core:server:getVehiclesToSpawn', function()
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
-    if resourceName ~= 'qbx_vehicles' then return end
-
-    cachedVehicles = {}
-    spawnedVehicleIds = {}
+    -- if resourceName ~= 'qbx_vehicles' then return end
 
     local vehicles = exports.qbx_vehicles:GetPlayerVehicles({ states = 0 })
     if not vehicles then return end
@@ -292,11 +276,7 @@ end)
 
 AddEventHandler('onResourceStop', function(resourceName)
     if resourceName ~= cache.resource then return end
-
     saveAllVehicle()
-    spawnedVehicleIds = {}
-    vehicleSpawnQueue = {}
-    isProcessingQueue = false
 end)
 
 AddEventHandler('txAdmin:events:scheduledRestart', function(eventData)
