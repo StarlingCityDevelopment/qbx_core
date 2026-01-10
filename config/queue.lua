@@ -25,6 +25,7 @@ local function checkUser(discord, role, skipOpenCheck)
     local url = (botUrl .. "users/%s/%s/roles"):format(discord, GetConvar("discordGuildId", ""))
 
     if not skipOpenCheck and not checkTime() then
+        print(("^3[Queue] Player rejected (Closed Hours):^7 %s"):format(discord))
         p:resolve(false)
         return Citizen.Await(p)
     end
@@ -32,12 +33,15 @@ local function checkUser(discord, role, skipOpenCheck)
     local success, result = pcall(function()
         PerformHttpRequest(url, function(code, body, head)
             if code ~= 200 then
+                print(("^1[Queue] API Error for player %s. HTTP Code: %s^7"):format(discord, tostring(code)))
                 p:resolve(false)
                 return
             end
 
             local data = json.decode(body)
+            
             if not data or not data.success then
+                print(("^1[Queue] API Data Error for player %s. Response was invalid or success=false.^7"):format(discord))
                 p:resolve(false)
                 return
             end
@@ -50,6 +54,7 @@ local function checkUser(discord, role, skipOpenCheck)
                     end
                 end
 
+                print(("^1[Queue] Access Denied for %s. Missing required role: %s^7"):format(discord, role))
                 p:resolve(false)
                 return
             end
@@ -61,14 +66,13 @@ local function checkUser(discord, role, skipOpenCheck)
     end)
 
     if not success then
-        print("^1Error in checkUser function: " .. tostring(result) .. "^7")
+        print("^1[Queue] Critical Error in checkUser function: " .. tostring(result) .. "^7")
         p:resolve(false)
         return
     end
 
     return Citizen.Await(p)
 end
-
 return {
     ---Amount of seconds to wait before removing a player from the queue after disconnecting while waiting.
     timeoutSeconds = 30,
@@ -127,7 +131,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, not devServer and "1294230484427083797", devServer) or false
+                return checkUser(discordId, devServer and false or "1294230484427083797", devServer) or false
             end,
         },
     },
