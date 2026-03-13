@@ -100,6 +100,7 @@ local function checkNearbyVehicles()
                 spawnRequested[entry.id] = true
             end
         end
+        Wait(100)
     end
 end
 
