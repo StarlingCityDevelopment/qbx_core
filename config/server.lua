@@ -116,18 +116,24 @@ return {
     end,
 
     getSocietyAccount = function(accountName)
-        return exports['Renewed-Banking']:getAccountMoney(accountName)
+        local account = exports.pefcl:getUniqueAccount(-1, accountName).data
+        return account and account.balance or 0
     end,
 
     removeSocietyMoney = function(accountName, payment)
-        return exports['Renewed-Banking']:removeAccountMoney(accountName, payment)
+        exports.pefcl:removeBankBalanceByIdentifier(-1, {
+			identifier = accountName,
+			amount = payment,
+			message = "Paiment d'un salaire",
+		})
+        return true
     end,
 
     ---Paycheck function
     ---@param player Player Player object
     ---@param payment number Payment amount
     sendPaycheck = function (player, payment)
-        player.Functions.AddMoney('bank', payment)
+        player.Functions.AddMoney('bank', payment, "Paiment de salaire")
         Notify(player.PlayerData.source, locale('info.received_paycheck', payment))
     end,
 }
