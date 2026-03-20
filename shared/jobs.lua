@@ -1,493 +1,511 @@
 ---Job names must be lower case (top level table key)
 ---@type table<string, Job>
 return {
-    ['unemployed'] = {
-        label = 'Civil',
+    ["unemployed"] = {
+        label = "Civil",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Freelancer',
+                name = "Freelancer",
                 payment = 50,
             },
         },
     },
 
-    ['government'] = {
-        type = 'leo',
-        label = 'Gouvernement',
+    ["government"] = {
+        type = "leo",
+        label = "Gouvernement",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Membre du Gouvernement',
+                name = "Membre du Gouvernement",
             },
             [1] = {
-                name = 'Agent Accueil',
+                name = "Agent Accueil",
             },
             [2] = {
-                name = 'Assistant Administratif',
+                name = "Assistant Administratif",
             },
             [3] = {
-                name = 'Officier Etat Civil',
+                name = "Officier Etat Civil",
             },
             [4] = {
-                name = 'Attache de presse',
+                name = "Attache de presse",
             },
             [5] = {
-                name = 'Agent de recouvrement',
+                name = "Agent de recouvrement",
             },
             [6] = {
-                name = 'Analyste',
+                name = "Analyste",
             },
             [7] = {
-                name = 'Charge de conformite',
+                name = "Charge de conformite",
             },
             [8] = {
-                name = 'Expert en reglementation',
+                name = "Expert en reglementation",
             },
             [9] = {
-                name = 'Controleur fiscal',
+                name = "Controleur fiscal",
             },
             [10] = {
-                name = 'Comptable',
+                name = "Comptable",
             },
             [11] = {
-                name = 'Diplomate',
+                name = "Diplomate",
             },
             [12] = {
-                name = 'Ambassadeur',
+                name = "Ambassadeur",
             },
             [13] = {
-                name = 'Responsable de Département',
+                name = "Responsable de Département",
             },
             [14] = {
-                name = 'Responsable de Service',
+                name = "Responsable de Service",
             },
             [15] = {
-                name = 'Secrétaire Adjoint',
+                name = "Secrétaire Adjoint",
             },
             [16] = {
-                name = 'Secrétaire',
+                name = "Secrétaire",
                 isboss = true,
             },
             [17] = {
-                name = 'Chef de Cabinet',
+                name = "Chef de Cabinet",
                 isboss = true,
             },
             [18] = {
-                name = 'Vice Gouverneur',
+                name = "Vice Gouverneur",
                 isboss = true,
                 bankAuth = true,
             },
             [19] = {
-                name = 'Gouverneur',
+                name = "Gouverneur",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['justice'] = {
-        type = 'leo',
-        label = 'Department of Justice',
+    ["justice"] = {
+        type = "leo",
+        label = "Department of Justice",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Membre du Department of Justice',
+                name = "Membre du Department of Justice",
             },
             [1] = {
-                name = 'Secrétaire ',
+                name = "Secrétaire ",
             },
             [2] = {
-                name = 'Agent Sécurité',
+                name = "Agent Sécurité",
             },
             [3] = {
-                name = 'Avocat',
+                name = "Avocat",
             },
             [4] = {
-                name = 'Huissier Novice',
+                name = "Huissier Novice",
             },
             [5] = {
-                name = 'Substitue du Procureur',
+                name = "Substitue du Procureur",
             },
             [6] = {
-                name = 'Assesseur',
+                name = "Assesseur",
             },
             [7] = {
-                name = 'Juge sous Tutelle',
+                name = "Juge sous Tutelle",
             },
             [8] = {
-                name = 'Huissier',
+                name = "Huissier",
             },
             [9] = {
-                name = 'Procureur',
+                name = "Procureur",
             },
             [10] = {
-                name = 'Juge',
+                name = "Juge",
             },
             [11] = {
-                name = 'Juge de la Cour d\'Appel',
+                name = "Juge de la Cour d'Appel",
             },
             [12] = {
-                name = 'Juge de la Cour Suprême',
+                name = "Juge de la Cour Suprême",
             },
             [13] = {
-                name = 'Avocat Général',
+                name = "Avocat Général",
                 isboss = true,
             },
             [14] = {
-                name = 'Chef de Département',
+                name = "Chef de Département",
                 isboss = true,
             },
             [15] = {
-                name = 'Gouverneur',
+                name = "Gouverneur",
                 isboss = true,
                 bankAuth = true,
             },
             [16] = {
-                name = 'Chief of Justice',
+                name = "Chief of Justice",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['police'] = {
-        type = 'leo',
-        label = 'LSPD',
+    ["police"] = {
+        type = "leo",
+        label = "LSPD",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Recrue',
+                name = "Recrue",
             },
             [1] = {
-                name = 'Cadet',
+                name = "Cadet",
             },
             [2] = {
-                name = 'Officier I',
+                name = "Officier I",
             },
             [3] = {
-                name = 'Officier II',
+                name = "Officier II",
             },
             [4] = {
-                name = 'Officier III',
+                name = "Officier III",
             },
             [5] = {
-                name = 'Sergeant',
+                name = "Sergeant",
             },
             [6] = {
-                name = 'Sergeant-chef',
+                name = "Sergeant-chef",
             },
             [7] = {
-                name = 'Lieutenant',
+                name = "Lieutenant",
             },
             [8] = {
-                name = 'Lieutenant-chef',
+                name = "Lieutenant-chef",
             },
             [9] = {
-                name = 'Capitaine',
+                name = "Capitaine",
             },
             [10] = {
-                name = 'Commander',
+                name = "Commander",
                 isboss = true,
                 bankAuth = true,
             },
             [11] = {
-                name = 'Deputy-chief',
+                name = "Deputy-chief",
                 isboss = true,
                 bankAuth = true,
             },
             [12] = {
-                name = 'Assistant Chief',
+                name = "Assistant Chief",
                 isboss = true,
                 bankAuth = true,
             },
             [13] = {
-                name = 'Chief',
+                name = "Chief",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['ambulance'] = {
-        type = 'ems',
-        label = 'EMS',
+    ["ambulance"] = {
+        type = "ems",
+        label = "EMS",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Stagiaire',
+                name = "Intérimaire",
             },
             [1] = {
-                name = 'Ambulancier',
+                name = "Aide Soignant",
             },
             [2] = {
-                name = 'Médecin',
+                name = "Infirmier",
             },
             [3] = {
-                name = 'Chirurgien',
+                name = "Médecin",
             },
             [4] = {
-                name = 'Directeur',
+                name = "Cadre santé",
+            },
+            [5] = {
+                name = "Diecteur adjoint",
                 isboss = true,
-                bankAuth = true,
-            },
-        },
-    },
-
-    ['usss'] = {
-        type = 'leo',
-        label = 'United States Secret Service',
-        defaultDuty = true,
-        offDutyPay = false,
-        grades = {
-            [0] = {
-                name = 'Recruit',
-            },
-            [1] = {
-                name = 'Field Agent I',
-            },
-            [2] = {
-                name = 'Field Agent II',
-            },
-            [3] = {
-                name = 'Senior Field Agent',
-            },
-            [4] = {
-                name = 'Special Agent',
-            },
-            [5] = {
-                name = 'Senior Special Agent',
-            },
-            [5] = {
-                name = 'Supervisory Special Agent',
             },
             [6] = {
-                name = 'Special Agent In Charge',
+                name = "Directeur",
+                isboss = true,
+                bankAuth = true,
+            },
+        },
+    },
+
+    ["dhs"] = {
+        type = "leo",
+        label = "Department of Homeland Security",
+        defaultDuty = true,
+        offDutyPay = false,
+        grades = {
+            [0] = {
+                name = "Recruit",
+            },
+            [1] = {
+                name = "Field Agent I",
+            },
+            [2] = {
+                name = "Field Agent II",
+            },
+            [3] = {
+                name = "Senior Field Agent",
+            },
+            [4] = {
+                name = "Special Agent",
+            },
+            [5] = {
+                name = "Senior Special Agent",
+            },
+            [6] = {
+                name = "Supervisory Special Agent",
             },
             [7] = {
-                name = 'Supervisor',
+                name = "Special Agent In Charge",
             },
             [8] = {
-                name = 'Senior Supervisor',
+                name = "Supervisor",
             },
             [9] = {
-                name = 'Lead Supervisor',
+                name = "Senior Supervisor",
             },
             [10] = {
-                name = 'Assistant Commander',
-                isboss = true,
+                name = "Lead Supervisor",
             },
             [11] = {
-                name = 'Assistant Deputy Commander',
-                isboss = true,
-                bankAuth = true,
+                name = "Assistant Commander",
             },
             [12] = {
-                name = 'Commander',
+                name = "Assistant Deputy Commander",
+            },
+            [13] = {
+                name = "Commander",
+            },
+            [14] = {
+                name = "Secretary of DHS",
+            },
+            [15] = {
+                name = "Assistant Director",
+                isboss = true,
+            },
+            [16] = {
+                name = "Deputy Director",
+                isboss = true,
+            },
+            [17] = {
+                name = "Director of DHS San Andreas",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['dailyglobe'] = {
-        label = 'Daily Globe',
+    ["dailyglobe"] = {
+        label = "Daily Globe",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Employé',
+                name = "Employé",
             },
             [1] = {
-                name = 'Directeur',
+                name = "Directeur",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['dynasty'] = {
-        label = 'Dynasty 8',
+    ["dynasty"] = {
+        label = "Dynasty 8",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Recrue',
+                name = "Recrue",
             },
             [1] = {
-                name = 'Agent Immobilier',
+                name = "Agent Immobilier",
             },
             [2] = {
-                name = 'Agent Immobilier Senior',
+                name = "Agent Immobilier Senior",
             },
             [3] = {
-                name = 'Agent Immobilier Expert',
+                name = "Agent Immobilier Expert",
             },
             [4] = {
-                name = 'Directeur',
+                name = "Directeur",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['pdm'] = {
-        label = 'Premium Deluxe Motorsport',
+    ["pdm"] = {
+        label = "Premium Deluxe Motorsport",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Recru',
+                name = "Recru",
             },
             [1] = {
-                name = 'Employé',
+                name = "Employé",
             },
             [2] = {
-                name = 'Employé Expérimenté',
+                name = "Employé Expérimenté",
             },
             [3] = {
-                name = 'Manager',
+                name = "Manager",
                 isboss = true,
             },
             [4] = {
-                name = 'Co-Patron',
+                name = "Co-Patron",
                 isboss = true,
             },
             [5] = {
-                name = 'Patron',
+                name = "Patron",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['luxuryautos'] = {
-        label = 'Luxury Autos',
+    ["luxuryautos"] = {
+        label = "Luxury Autos",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Employé',
+                name = "Employé",
             },
             [1] = {
-                name = 'Directeur',
+                name = "Directeur",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['cruisin'] = {
-        label = 'Cruisin Craftsmen',
+    ["cruisin"] = {
+        label = "Cruisin Craftsmen",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Employé',
+                name = "Employé",
             },
             [1] = {
-                name = 'Directeur',
+                name = "Directeur",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['lscustoms'] = {
-        label = 'Los Santos Customs',
+    ["lscustoms"] = {
+        label = "Los Santos Customs",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Employé',
+                name = "Employé",
             },
             [1] = {
-                name = 'Directeur',
+                name = "Directeur",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['burgershot'] = {
-        label = 'Burger Shot',
+    ["burgershot"] = {
+        label = "Burger Shot",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Employé',
+                name = "Employé",
             },
             [1] = {
-                name = 'Directeur',
+                name = "Directeur",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['tsubaki'] = {
-        label = 'Tsubaki Sushi',
+    ["tsubaki"] = {
+        label = "Tsubaki Sushi",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Employé',
+                name = "Employé",
             },
             [1] = {
-                name = 'Directeur',
+                name = "Directeur",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['unicorn'] = {
-        label = 'Vanilla Unicorn',
+    ["unicorn"] = {
+        label = "Vanilla Unicorn",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Employé',
+                name = "Employé",
             },
             [1] = {
-                name = 'Directeur',
+                name = "Directeur",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['coffeenoir'] = {
-        label = 'Coffee Noir',
+    ["coffeenoir"] = {
+        label = "Coffee Noir",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Employé',
+                name = "Employé",
             },
             [1] = {
-                name = 'Directeur',
+                name = "Directeur",
                 isboss = true,
                 bankAuth = true,
             },
         },
     },
 
-    ['taxi'] = {
-        label = 'Taxi',
+    ["taxi"] = {
+        label = "Taxi",
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Chauffeur',
+                name = "Chauffeur",
             },
             [1] = {
-                name = 'Directeur',
+                name = "Directeur",
                 isboss = true,
                 bankAuth = true,
             },
