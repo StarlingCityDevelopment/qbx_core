@@ -1,34 +1,10 @@
 local devServer = GetConvar('environment', 'production') == 'development'
 local serverName = require 'config.shared'.serverName
 
---- Check if the current time is within the allowed queue hours.
----@return boolean
-local function checkTime()
-    local hour = tonumber(os.date('%H'))
-    local openHour = tonumber(GetConvar('queueOpenHour', '15'))
-    local closeHour = tonumber(GetConvar('queueCloseHour', '3'))
-
-    if openHour == 0 and closeHour == 24 then
-        return true
-    end
-
-    if openHour < closeHour then
-        return hour >= openHour and hour < closeHour
-    else
-        return hour >= openHour or hour < closeHour
-    end
-end
-
-local function checkUser(discord, role, skipOpenCheck)
+local function checkUser(discord, role)
     local p = promise:new()
     local botUrl = GetConvar("bot_url", "https://protect.starlingrp.fr/api/")
     local url = (botUrl .. "users/%s/%s/roles"):format(discord, GetConvar("discordGuildId", ""))
-
-    if not skipOpenCheck and not checkTime() then
-        print(("^3[Queue] Player rejected (Closed Hours):^7 %s"):format(discord))
-        p:resolve(false)
-        return Citizen.Await(p)
-    end
 
     local success, result = pcall(function()
         PerformHttpRequest(url, function(code, body, head)
@@ -109,7 +85,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, "1294233625440817222", true) or false
+                return checkUser(discordId, "1294233625440817222") or false
             end,
             cardOptions = { color = 'good' }
         },
@@ -121,7 +97,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, "1294232960723325040", true) or false
+                return checkUser(discordId, "1294232960723325040") or false
             end,
             cardOptions = { color = 'good' }
         },
@@ -133,7 +109,7 @@ return {
                     return false
                 end
                 discordId = discordId:gsub('discord:', '')
-                return checkUser(discordId, not devServer and "1294230484427083797", devServer) or false
+                return checkUser(discordId, not devServer and "1294230484427083797") or false
             end,
         },
     },
