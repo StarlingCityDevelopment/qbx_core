@@ -8,10 +8,7 @@ local netId
 local vehicle
 local seat
 
-local vehicleEntries = {}
-local spawnRequested = {}
-local lastCheckTime = 0
-local CHECK_INTERVAL = 2000
+local zones = {}
 local watchedKeys = {
     'bodyHealth',
     'engineHealth',
@@ -24,6 +21,12 @@ local watchedKeys = {
     'tyres',
 }
 
+---Calculates the difference in values of two tables for the watched keys.
+---If the second table does not have a value that the first table has, it will be marked 'deleted'.
+---@param tbl1 table
+---@param tbl2 table
+---@return table diff
+---@return boolean hasChanged if diff table is not empty
 local function calculateDiff(tbl1, tbl2)
     local diff = {}
     local hasChanged = false
@@ -63,44 +66,18 @@ local function sendPropsDiff()
     TriggerServerEvent('qbx_core:server:vehiclePropsChanged', netId, diff)
 end
 
-local function createVehicleEntries(vehicles)
+---@param vehicles table
+local function createVehicleZones(vehicles)
     for id, coords in pairs(vehicles) do
-        if not vehicleEntries[id] then
-            local entry = {
+        if not zones[id] then
+            zones[id] = lib.points.new({
+                distance = 75.0,
                 coords = coords,
-                radius = 75.0,
-                id = id
-            }
-            lib.grid.addEntry(entry)
-            vehicleEntries[id] = entry
+                onEnter = function()
+                    TriggerServerEvent('qbx_core:server:spawnVehicle', id, coords)
+                end
+            })
         end
-    end
-end
-
-local function checkNearbyVehicles()
-    local currentTime = GetGameTimer()
-    if (currentTime - lastCheckTime) < CHECK_INTERVAL then
-        return
-    end
-    lastCheckTime = currentTime
-
-    if not cache.ped or not DoesEntityExist(cache.ped) then return end
-
-    local playerCoords = GetEntityCoords(cache.ped)
-    local nearbyEntries = lib.grid.getNearbyEntries(playerCoords, function(entry)
-        return entry.id and vehicleEntries[entry.id] and not spawnRequested[entry.id]
-    end)
-
-    for i = 1, #nearbyEntries do
-        local entry = nearbyEntries[i]
-        if entry.id and vehicleEntries[entry.id] and not spawnRequested[entry.id] then
-            local distance = #(vec3(playerCoords.x, playerCoords.y, playerCoords.z) - vec3(entry.coords.x, entry.coords.y, entry.coords.z))
-            if distance <= entry.radius then
-                TriggerServerEvent('qbx_core:server:spawnVehicle', entry.id, entry.coords)
-                spawnRequested[entry.id] = true
-            end
-        end
-        Wait(100)
     end
 end
 
@@ -123,44 +100,18 @@ lib.onCache('seat', function(newSeat)
     end
 end)
 
-CreateThread(function()
-    Wait(1000)
-
-    local vehicles = lib.callback.await('qbx_core:server:getVehiclesToSpawn', 2500)
-    if not vehicles then return end
-
-    createVehicleEntries(vehicles)
-
-    if next(vehicleEntries) then
-        CreateThread(function()
-            while next(vehicleEntries) do
-                checkNearbyVehicles()
-                Wait(CHECK_INTERVAL)
-            end
-        end)
-    end
-end)
+if not full then return end
 
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     local vehicles = lib.callback.await('qbx_core:server:getVehiclesToSpawn', 2500)
     if not vehicles then return end
 
-    createVehicleEntries(vehicles)
-
-    if next(vehicleEntries) then
-        CreateThread(function()
-            while next(vehicleEntries) do
-                checkNearbyVehicles()
-                Wait(CHECK_INTERVAL)
-            end
-        end)
-    end
+    createVehicleZones(vehicles)
 end)
 
 RegisterNetEvent('qbx_core:client:removeVehZone', function(id)
-    if not vehicleEntries[id] then return end
+    if not zones[id] then return end
 
-    lib.grid.removeEntry(vehicleEntries[id])
-    vehicleEntries[id] = nil
-    spawnRequested[id] = nil
+    zones[id]:remove()
+    zones[id] = nil
 end)

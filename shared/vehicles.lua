@@ -3720,12 +3720,12 @@ return {
         hash = `komoda`,
     },
     kosatka = {
-        name = "Kosatka",
-        brand = "RUNE",
-        model = "kosatka",
-        price = 999999999,
-        category = "boats",
-        type = "boat",
+        name = 'Kosatka',
+        brand = 'RUNE',
+        model = 'kosatka',
+        price = 624016,
+        category = 'boats',
+        type = 'submarine',
         hash = `kosatka`,
     },
     krieger = {
