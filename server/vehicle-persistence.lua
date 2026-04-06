@@ -247,6 +247,7 @@ local function spawnVehicle(coords, id, model, props)
                     end
 
                     TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
+                    TriggerEvent('qbx_core:server:persistentVehicleSpawned', request.id)
                     cachedVehicles[request.id] = nil
                 end
             end
@@ -281,7 +282,6 @@ end)
 
 AddEventHandler('txAdmin:events:scheduledRestart', function(eventData)
     if eventData.secondsRemaining ~= 60 then return end
-
     saveAllVehicle()
 end)
 
