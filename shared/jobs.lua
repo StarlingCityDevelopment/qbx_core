@@ -384,6 +384,32 @@ return {
         },
     },
 
+    ["uwu"] = {
+        label = "Uwu Cafe",
+        defaultDuty = true,
+        offDutyPay = false,
+        grades = {
+            [0] = {
+                name = "Recrue",
+            },
+            [1] = {
+                name = "Employé",
+            },
+            [2] = {
+                name = "Manager",
+            },
+            [3] = {
+                name = "Co-patron",
+                isboss = true,
+            },
+            [4] = {
+                name = "Patron",
+                isboss = true,
+                bankAuth = true,
+            },
+        },
+    },
+
     ["luxuryautos"] = {
         label = "Luxury Autos",
         defaultDuty = true,
