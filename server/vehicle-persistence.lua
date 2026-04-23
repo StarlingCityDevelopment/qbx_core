@@ -313,6 +313,8 @@ RegisterNetEvent('qbx_core:server:vehiclePositionChanged', function(netId)
     local ped = GetPlayerPed(src)
     local vehicle = NetworkGetEntityFromNetworkId(netId)
 
+    if not vehicle or not DoesEntityExist(vehicle) then return end
+
     local vehicleId = getVehicleId(vehicle)
     if not vehicleId then return end
 
@@ -333,6 +335,8 @@ RegisterNetEvent('qbx_core:server:oneTimeSave', function(netId)
 
     local ped = GetPlayerPed(src)
     local vehicle = NetworkGetEntityFromNetworkId(netId)
+
+    if not vehicle or not DoesEntityExist(vehicle) then return end
 
     local vehicleId = getVehicleId(vehicle)
     if not vehicleId then return end
