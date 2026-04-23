@@ -122,26 +122,26 @@ end)
 
 if not full then return end
 
-exports.sleepless_interact:addGlobalVehicle({
-    id = 'one_time_save',
-    label = 'Réparer le véhicule',
-    icon = 'fa-solid fa-floppy-disk',
-    canInteract = function(entity)
-        local props = lib.getVehicleProperties(entity)
-        if not props.plate then return false end
-        return Entity(entity).state.onetimesave and Entity(entity).state.onetimesave ~= props.plate
-    end,
-    onSelect = function(entity)
-        local vehNetId = NetworkGetNetworkIdFromEntity(entity)
-        TriggerServerEvent('qbx_core:server:oneTimeSave', vehNetId)
-        Wait(100)
-        exports.sleepless_interact:removeGlobalVehicle("one_time_save")
-    end
-})
-
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     local vehicles = lib.callback.await('qbx_core:server:getVehiclesToSpawn', 2500)
     if not vehicles then return end
+
+    exports.sleepless_interact:addGlobalVehicle({
+        id = 'one_time_save',
+        label = 'Réparer le véhicule',
+        icon = 'fa-solid fa-floppy-disk',
+        canInteract = function(entity)
+            local props = lib.getVehicleProperties(entity)
+            if not props.plate then return false end
+            return Entity(entity).state.onetimesave and Entity(entity).state.onetimesave ~= props.plate
+        end,
+        onSelect = function(entity)
+            local vehNetId = NetworkGetNetworkIdFromEntity(entity)
+            TriggerServerEvent('qbx_core:server:oneTimeSave', vehNetId)
+            Wait(100)
+            exports.sleepless_interact:removeGlobalVehicle("one_time_save")
+        end
+    })
 
     createVehicleZones(vehicles)
 end)
