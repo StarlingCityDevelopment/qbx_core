@@ -17,9 +17,38 @@ if not enable then return end
 
 assert(lib.checkDependency('qbx_vehicles', '1.4.1', true))
 
+local SPAWN_TIMEOUT = 5000
+
+---@param vehicle number
+---@return number
 local function getVehicleId(vehicle)
     return Entity(vehicle).state.vehicleid or
         exports.qbx_vehicles:GetVehicleIdByPlate(qbx.getVehiclePlate(vehicle))
+end
+
+--- Spawn a vehicle with a timeout
+--- @param spawnData table
+--- @param timeout number
+--- @return number | nil, number | nil
+local function spawnVehicleWithTimeout(spawnData, timeout)
+    local netId, entity
+    local spawnCompleted = false
+
+    CreateThread(function()
+        netId, entity = qbx.spawnVehicle(spawnData)
+        spawnCompleted = true
+    end)
+
+    local startTime = GetGameTimer()
+    while not spawnCompleted and (GetGameTimer() - startTime) < timeout do
+        Wait(0)
+    end
+
+    if not spawnCompleted then
+        return nil, nil
+    end
+
+    return netId, entity
 end
 
 RegisterNetEvent('qbx_core:server:vehiclePropsChanged', function(netId, diff)
@@ -132,7 +161,6 @@ local cachedVehicles = {}
 local vehicleSpawnQueue = {}
 local isProcessingQueue = false
 local config = require 'config.server'
-local SPAWN_TIMEOUT = 5000
 
 ---@param id number
 ---@return boolean
@@ -188,31 +216,6 @@ local function saveAllVehicle()
     end
 end
 
---- Spawn a vehicle with a timeout
---- @param spawnData table
---- @param timeout number
---- @return number, number
-local function spawnVehicleWithTimeout(spawnData, timeout)
-    local netId, entity
-    local spawnCompleted = false
-
-    CreateThread(function()
-        netId, entity = qbx.spawnVehicle(spawnData)
-        spawnCompleted = true
-    end)
-
-    local startTime = GetGameTimer()
-    while not spawnCompleted and (GetGameTimer() - startTime) < timeout do
-        Wait(0)
-    end
-
-    if not spawnCompleted then
-        return nil, nil
-    end
-
-    return netId, entity
-end
-
 ---@param coords vector4
 ---@param id number
 ---@param model string
@@ -248,7 +251,7 @@ local function spawnVehicle(coords, id, model, props)
                         TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
                         TriggerEvent('qbx_core:server:persistentVehicleSpawned', request.id)
 
-                        config.setVehicleLock(veh, config.persistence.lockState)
+                        config.setVehicleLock(entity, config.persistence.lockState)
                         cachedVehicles[request.id] = nil
                     end
                 end
