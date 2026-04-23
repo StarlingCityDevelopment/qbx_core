@@ -247,13 +247,12 @@ local function spawnVehicle(coords, id, model, props)
                     if entity and DoesEntityExist(entity) then
                         Entity(entity).state:set('vehicleid', request.id, false)
                         Entity(entity).state:set('onetimesave', request.props.plate, false)
-
-                        TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
-                        TriggerEvent('qbx_core:server:persistentVehicleSpawned', request.id)
-
                         config.setVehicleLock(entity, config.persistence.lockState)
-                        cachedVehicles[request.id] = nil
                     end
+
+                    TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
+                    TriggerEvent('qbx_core:server:persistentVehicleSpawned', request.id)
+                    cachedVehicles[request.id] = nil
                 end
             end
 
