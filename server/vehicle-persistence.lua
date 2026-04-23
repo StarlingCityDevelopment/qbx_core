@@ -19,7 +19,7 @@ assert(lib.checkDependency('qbx_vehicles', '1.4.1', true))
 
 local function getVehicleId(vehicle)
     return Entity(vehicle).state.vehicleid or
-        exports.qbx_vehicles:GetVehicleIdByPlate(GetVehicleNumberPlateText(vehicle))
+        exports.qbx_vehicles:GetVehicleIdByPlate(qbx.getVehiclePlate(vehicle))
 end
 
 RegisterNetEvent('qbx_core:server:vehiclePropsChanged', function(netId, diff)
