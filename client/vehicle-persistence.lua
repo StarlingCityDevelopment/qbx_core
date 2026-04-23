@@ -7,6 +7,7 @@ local cachedProps
 local netId
 local vehicle
 local seat
+local inSpawnZone
 
 local zones = {}
 local watchedKeys = {
@@ -66,6 +67,21 @@ local function sendPropsDiff()
     TriggerServerEvent('qbx_core:server:vehiclePropsChanged', netId, diff)
 end
 
+---@param id number
+---@param coords table
+local function checkSpeed(id, coords)
+    CreateThread(function()
+        while inSpawnZone do
+            local speed = GetEntitySpeed(cache.ped)
+            if speed < 2.5 then
+                TriggerServerEvent('qbx_core:server:spawnVehicle', id, coords)
+                break
+            end
+            Wait(2500)
+        end
+    end)
+end
+
 ---@param vehicles table
 local function createVehicleZones(vehicles)
     for id, coords in pairs(vehicles) do
@@ -74,8 +90,12 @@ local function createVehicleZones(vehicles)
                 distance = 75.0,
                 coords = coords,
                 onEnter = function()
-                    TriggerServerEvent('qbx_core:server:spawnVehicle', id, coords)
-                end
+                    inSpawnZone = true
+                    checkSpeed(id, coords)
+                end,
+                onExit = function()
+                    inSpawnZone = false
+                end,
             })
         end
     end
@@ -101,6 +121,23 @@ lib.onCache('seat', function(newSeat)
 end)
 
 if not full then return end
+
+exports.sleepless_interact:addGlobalVehicle({
+    id = 'one_time_save',
+    label = 'Réparer le véhicule',
+    icon = 'fa-solid fa-floppy-disk',
+    canInteract = function(entity)
+        local props = lib.getVehicleProperties(entity)
+        if not props.plate then return false end
+        return Entity(entity).state.onetimesave and Entity(entity).state.onetimesave ~= props.plate
+    end,
+    onSelect = function(entity)
+        local vehNetId = NetworkGetNetworkIdFromEntity(entity)
+        TriggerServerEvent('qbx_core:server:oneTimeSave', vehNetId)
+        Wait(100)
+        exports.sleepless_interact:removeGlobalVehicle("one_time_save")
+    end
+})
 
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     local vehicles = lib.callback.await('qbx_core:server:getVehiclesToSpawn', 2500)

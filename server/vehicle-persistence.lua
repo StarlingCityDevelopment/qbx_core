@@ -243,12 +243,14 @@ local function spawnVehicle(coords, id, model, props)
 
                     if entity and DoesEntityExist(entity) then
                         Entity(entity).state:set('vehicleid', request.id, false)
-                        config.setVehicleLock(veh, config.persistence.lockState)
-                    end
+                        Entity(entity).state:set('onetimesave', request.props.plate, false)
 
-                    TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
-                    TriggerEvent('qbx_core:server:persistentVehicleSpawned', request.id)
-                    cachedVehicles[request.id] = nil
+                        TriggerClientEvent('qbx_core:client:removeVehZone', -1, request.id)
+                        TriggerEvent('qbx_core:server:persistentVehicleSpawned', request.id)
+
+                        config.setVehicleLock(veh, config.persistence.lockState)
+                        cachedVehicles[request.id] = nil
+                    end
                 end
             end
 
@@ -321,4 +323,32 @@ RegisterNetEvent('qbx_core:server:vehiclePositionChanged', function(netId)
     end
 
     saveVehicle(vehicle, vehicleCoords, vehicleHeading)
+end)
+
+
+RegisterNetEvent('qbx_core:server:oneTimeSave', function(netId)
+    local src = source
+
+    local ped = GetPlayerPed(src)
+    local vehicle = NetworkGetEntityFromNetworkId(netId)
+
+    local vehicleId = getVehicleId(vehicle)
+    if not vehicleId then return end
+
+    local pedCoords = GetEntityCoords(ped)
+    local vehicleCoords = GetEntityCoords(vehicle)
+
+    if #(pedCoords - vehicleCoords) > 10.0 then
+        return
+    end
+
+    DeleteVehicle(vehicle)
+
+    local playerVehicle = exports.qbx_vehicles:GetPlayerVehicle(vehicleId)
+    if not playerVehicle or not playerVehicle.props then return end
+
+    local props = playerVehicle.props
+    local model = playerVehicle.modelName
+    local coords = vec4(playerVehicle.coords.x, playerVehicle.coords.y, playerVehicle.coords.z, playerVehicle.coords.w)
+    spawnVehicle(coords, vehicleId, model, props)
 end)
