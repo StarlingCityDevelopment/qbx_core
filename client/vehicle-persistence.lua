@@ -132,11 +132,11 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
         icon = 'fa-solid fa-floppy-disk',
         canInteract = function(entity)
             local props = lib.getVehicleProperties(entity)
-            if not props.plate then return false end
+            if not props or not props.plate then return false end
             return Entity(entity).state.onetimesave and Entity(entity).state.onetimesave ~= props.plate
         end,
-        onSelect = function(entity)
-            local vehNetId = NetworkGetNetworkIdFromEntity(entity)
+        onSelect = function(data)
+            local vehNetId = NetworkGetNetworkIdFromEntity(data.entity)
             TriggerServerEvent('qbx_core:server:oneTimeSave', vehNetId)
             Wait(100)
             exports.sleepless_interact:removeGlobalVehicle("one_time_save")
